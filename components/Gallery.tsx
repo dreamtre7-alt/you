@@ -25,7 +25,8 @@ const Gallery: React.FC<GalleryProps> = ({ posts, isAdmin, onWrite, onAddPost })
     const files = e.target.files;
     if (!files) return;
 
-    const fileArray = Array.from(files);
+    // Fix: Explicitly cast to File[] to avoid 'unknown' type inference which causes Blob compatibility issues
+    const fileArray = Array.from(files) as File[];
     setIsUploading(true);
 
     const promises = fileArray.map(file => {
@@ -34,6 +35,7 @@ const Gallery: React.FC<GalleryProps> = ({ posts, isAdmin, onWrite, onAddPost })
         reader.onloadend = () => {
           resolve(reader.result as string);
         };
+        // Fix: 'file' is now correctly typed as 'File' (which inherits from 'Blob')
         reader.readAsDataURL(file);
       });
     });

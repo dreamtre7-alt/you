@@ -57,7 +57,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
     const files = e.target.files;
     if (!files) return;
 
-    const fileArray = Array.from(files);
+    // Fix: Explicitly cast to File[] to ensure 'file' in map is correctly typed for readAsDataURL
+    const fileArray = Array.from(files) as File[];
     setIsUploading(true);
 
     const promises = fileArray.map(file => {
@@ -66,6 +67,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
         reader.onloadend = () => {
           resolve(reader.result as string);
         };
+        // Fix: readAsDataURL now receives a File (Blob) instead of 'unknown'
         reader.readAsDataURL(file);
       });
     });
