@@ -1,0 +1,11 @@
+
+User-agent: *
+Allow: /
+
+User-agent: NaverBot
+Allow: /
+
+User-agent: Yeti
+Allow: /
+
+Sitemap: https://kkumttre.com/sitemap.xml

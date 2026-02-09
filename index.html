@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>꿈뜨레 지역공동체 | 창원시 비영리 민간단체</title>
+    
+    <!-- 네이버 검색 엔진 최적화 (Naver SEO) -->
+    <meta name="naver-site-verification" content="여기에_네이버에서_제공받은_코드를_넣으세요" />
+    <meta name="description" content="창원시 비영리 민간단체 제 2023-001호 꿈뜨레 지역공동체. 창원 마산 내서읍 주민 주도 행복 공동체 및 다함께돌봄센터 위탁 운영.">
+    <meta name="keywords" content="꿈뜨레, 꿈뜨레 지역공동체, 창원 비영리단체, 창원 공동체, 마산 비영리단체, 내서읍 공동체, 창원 봉사활동, 창원 사회공헌, 다함께돌봄센터, 마산 아이돌봄">
+    <meta name="author" content="꿈뜨레 지역공동체">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://kkumttre.com">
+
+    <!-- 다음/카카오 및 네이버 소셜 공유 최적화 (Open Graph) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="꿈뜨레 지역공동체">
+    <meta property="og:description" content="함께 심고 가꾸는 공동체의 뜰, 창원시 비영리 민간단체 꿈뜨레입니다.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1596464716127-f2a82984de30?w=1200">
+    <meta property="og:url" content="https://kkumttre.com">
+    <meta property="og:site_name" content="꿈뜨레 지역공동체">
+    
+    <!-- 카카오 전용 -->
+    <meta name="kakao:title" content="꿈뜨레 지역공동체">
+    <meta name="kakao:description" content="주민과 함께 디자인하는 행복한 창원의 내일.">
+
+    <!-- 검색 엔진 구조화 데이터 (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "꿈뜨레 지역공동체",
+      "url": "https://kkumttre.com",
+      "logo": "https://images.unsplash.com/photo-1596464716127-f2a82984de30?w=200",
+      "sameAs": [
+        "https://m.blog.naver.com/zaminan"
+      ],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "055-232-5412",
+        "contactType": "customer service"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "삼계6길40",
+        "addressLocality": "창원시 마산회원구 내서읍",
+        "addressRegion": "경상남도",
+        "postalCode": "51234",
+        "addressCountry": "KR"
+      },
+      "description": "창원시 비영리 민간단체 등록 제 2023-001호. 지역사회 혁신과 주민 행복을 위한 공동체입니다."
+    }
+    </script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@100..900&family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-purple: #5B21B6;
+            --primary-purple-rgb: 91, 33, 182;
+            --deep-black: #111111;
+            --theme-brightness: 1;
+            --bg-lavender: #FAF5FF;
+        }
+        body {
+            font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+            background-color: var(--bg-lavender);
+            color: var(--deep-black);
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+        
+        /* 은은하고 감각적인 배경 디자인 시스템 */
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100;
+            opacity: 0.015;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        .mesh-gradient-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+            background: #ffffff;
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.35;
+            animation: move-blob 40s infinite alternate ease-in-out;
+        }
+
+        @keyframes move-blob {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(10vw, -10vh) scale(1.2); }
+            66% { transform: translate(-5vw, 15vh) scale(0.8); }
+            100% { transform: translate(5vw, -5vh) scale(1.1); }
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.55);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px 0 rgba(91, 33, 182, 0.03);
+        }
+
+        .purple-gradient {
+            background: linear-gradient(135deg, #5B21B6 0%, #4C1D95 100%);
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #F3E8FF; }
+        ::-webkit-scrollbar-thumb { background: #A78BFA; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #5B21B6; }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(91, 33, 182, 0.2); border-radius: 10px; }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react": "https://esm.sh/react@^19.2.4",
+    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
+    "@google/genai": "https://esm.sh/@google/genai@^1.40.0"
+  }
+}
+</script>
+</head>
+<body>
+    <div class="noise-overlay"></div>
+    <div class="mesh-gradient-container">
+        <div class="blob w-[600px] h-[600px] bg-purple-200 top-[-20%] left-[-10%] animate-[move-blob_50s_infinite]"></div>
+        <div class="blob w-[500px] h-[500px] bg-indigo-100 bottom-[-10%] right-[-10%] animate-[move-blob_45s_infinite_reverse]"></div>
+        <div class="blob w-[400px] h-[400px] bg-lavender-200 top-[40%] left-[30%] animate-[move-blob_60s_infinite_ease-in-out]"></div>
+    </div>
+    <div id="root"></div>
+</body>
+</html>
