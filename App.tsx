@@ -1,17 +1,17 @@
 
 import React, { useState, useEffect } from 'react';
-import { Post, SiteSettings, PostCategory, View } from './types';
-import { INITIAL_POSTS, INITIAL_SETTINGS } from './constants';
-import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import About from './components/About';
-import Gallery from './components/Gallery';
-import NoticeBoard from './components/NoticeBoard';
-import Sponsorship from './components/Sponsorship';
-import Contact from './components/Contact';
-import Footer from './components/Footer';
-import AdminDashboard from './components/AdminDashboard';
-import MediaFeed from './components/MediaFeed';
+import { Post, SiteSettings, PostCategory, View } from './types.ts';
+import { INITIAL_POSTS, INITIAL_SETTINGS } from './constants.ts';
+import Navbar from './components/Navbar.tsx';
+import Hero from './components/Hero.tsx';
+import About from './components/About.tsx';
+import Gallery from './components/Gallery.tsx';
+import NoticeBoard from './components/NoticeBoard.tsx';
+import Sponsorship from './components/Sponsorship.tsx';
+import Contact from './components/Contact.tsx';
+import Footer from './components/Footer.tsx';
+import AdminDashboard from './components/AdminDashboard.tsx';
+import MediaFeed from './components/MediaFeed.tsx';
 import { Lock, Unlock, ArrowRight, ShieldCheck, X } from 'lucide-react';
 
 const App: React.FC = () => {
@@ -66,10 +66,7 @@ const App: React.FC = () => {
 
   const deletePost = (id: string) => {
     if (window.confirm('정말로 이 게시물을 삭제하시겠습니까?')) {
-      setPosts(prev => {
-        const filtered = prev.filter(p => p.id !== id);
-        return [...filtered]; 
-      });
+      setPosts(prev => prev.filter(p => p.id !== id));
     }
   };
 
@@ -138,7 +135,7 @@ const App: React.FC = () => {
                     <div className="grid grid-cols-2 gap-5 mb-10">
                       {posts.filter(p => p.category === 'ACTIVITY').slice(0, 2).map(p => (
                         <div key={p.id} className="aspect-square rounded-[2rem] overflow-hidden shadow-inner bg-purple-50">
-                          <img src={p.imageUrls?.[0]} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                          <img src={p.imageUrls?.[0]} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={p.title} />
                         </div>
                       ))}
                       {posts.filter(p => p.category === 'ACTIVITY').length === 0 && (
