@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { SiteSettings, Post, PostCategory, SponsorshipAccount } from '../types.ts';
-import { X, Plus, Trash2, Layout, FileText, Settings, User, Palette, Image as ImageIcon, Info, CreditCard, CheckCircle2, Link as LinkIcon, Upload, MapPin, Phone, Mail, Loader2, Edit3, RotateCcw, BookOpen, ExternalLink, Camera, Send } from 'lucide-react';
+import { SiteSettings, Post, PostCategory } from '../types.ts';
+import { X, Plus, Trash2, Layout, FileText, Settings, User, Image as ImageIcon, CheckCircle2, Link as LinkIcon, Upload, Loader2, Edit3, RotateCcw, BookOpen, Camera, Send, Mail, MapPin, Phone } from 'lucide-react';
 
 interface AdminDashboardProps {
   settings: SiteSettings;
@@ -24,7 +24,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const formRef = useRef<HTMLDivElement>(null);
   const titleInputRef = useRef<HTMLInputElement>(null);
 
-  // 센터별 이미지 업로드 레퍼런스
+  // 센터 블로그 이미지 업로드 레퍼런스
   const fileInputBlog7Ref = useRef<HTMLInputElement>(null);
   const fileInputBlog3Ref = useRef<HTMLInputElement>(null);
   const [isBlog7Uploading, setIsBlog7Uploading] = useState(false);
@@ -46,7 +46,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   
   const [uploadedPostImages, setUploadedPostImages] = useState<string[]>([]);
   const [isUploading, setIsUploading] = useState(false);
-
   const fileInputPostRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -61,10 +60,10 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
     alert('사이트 설정이 성공적으로 저장되었습니다.');
   };
 
-  // 일반 게시물 이미지 업로드 핸들러
   const handlePostImagesUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
+    // Fix: Explicitly cast to File[] to avoid 'unknown' type inference which causes Blob compatibility issues with FileReader.readAsDataURL
     const fileArray = Array.from(files) as File[];
     setIsUploading(true);
     const promises = fileArray.map(file => {
@@ -80,7 +79,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
     });
   };
 
-  // 센터별 블로그 표지 이미지 업로드 핸들러
   const handleBlogImageUpload = (e: React.ChangeEvent<HTMLInputElement>, target: 'blogImage7' | 'blogImage3') => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -194,29 +192,29 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 <section className="space-y-8">
                   <div className="flex items-center space-x-3 mb-6">
                     <User className="w-5 h-5 text-purple-400" />
-                    <h3 className="text-xl font-bold text-white">대표자 및 단체 기본정보</h3>
+                    <h3 className="text-xl font-bold text-white">대표자 및 단체 기본정보 (연락처)</h3>
                   </div>
                   <div className="grid md:grid-cols-2 gap-8">
                     <div>
-                      <label className="block text-[10px] font-black text-gray-500 uppercase mb-3 tracking-widest">대표자 성함</label>
+                      <label className="block text-[10px] font-black text-gray-500 mb-3 tracking-widest uppercase">대표자 성함</label>
                       <input type="text" value={localSettings.representativeName} onChange={(e) => setLocalSettings({...localSettings, representativeName: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-purple-500 text-white font-bold" />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-black text-gray-500 uppercase mb-3 tracking-widest">대표 연락처 (전화)</label>
+                      <label className="block text-[10px] font-black text-gray-500 mb-3 tracking-widest uppercase">대표 연락처 (전화)</label>
                       <input type="text" value={localSettings.contactPhone} onChange={(e) => setLocalSettings({...localSettings, contactPhone: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-purple-500 text-white font-bold" />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-black text-gray-500 uppercase mb-3 tracking-widest">공식 이메일 주소</label>
+                      <label className="block text-[10px] font-black text-gray-500 mb-3 tracking-widest uppercase">공식 이메일 주소</label>
                       <input type="email" value={localSettings.contactEmail} onChange={(e) => setLocalSettings({...localSettings, contactEmail: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-purple-500 text-white font-bold" placeholder="example@email.com" />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-black text-gray-500 uppercase mb-3 tracking-widest">사이트 노출 주소</label>
+                      <label className="block text-[10px] font-black text-gray-500 mb-3 tracking-widest uppercase">사이트 노출 주소</label>
                       <input type="text" value={localSettings.contactAddress} onChange={(e) => setLocalSettings({...localSettings, contactAddress: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-purple-500 text-white font-bold" placeholder="경상남도 창원시..." />
                     </div>
                   </div>
                 </section>
 
-                {/* 블로그 및 센터 관리 (이미지 업로드) */}
+                {/* 블로그 및 센터 미디어 연동 */}
                 <section className="space-y-8 border-t border-white/5 pt-12">
                   <div className="flex items-center space-x-3 mb-6">
                     <BookOpen className="w-5 h-5 text-green-400" />
@@ -235,7 +233,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                           {localSettings.blogImage7 ? (
                             <img src={localSettings.blogImage7} className="w-full h-full object-cover group-hover:opacity-50 transition-opacity" />
                           ) : (
-                            <div className="w-full h-full flex items-center justify-center text-gray-600 text-[10px] font-black italic">NO COVER IMAGE</div>
+                            <div className="w-full h-full flex items-center justify-center text-gray-600 text-[10px] font-black italic uppercase">No Cover Image</div>
                           )}
                           <button 
                             onClick={() => fileInputBlog7Ref.current?.click()}
@@ -247,7 +245,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                         </div>
                       </div>
                       <div>
-                        <label className="block text-[10px] font-bold text-gray-500 mb-2">네이버 블로그 주소</label>
+                        <label className="block text-[10px] font-bold text-gray-500 mb-2">네이버 블로그 주소 (URL)</label>
                         <input type="text" value={localSettings.blogUrl7} onChange={(e) => setLocalSettings({...localSettings, blogUrl7: e.target.value})} className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-green-500 text-white text-xs" />
                       </div>
                     </div>
@@ -263,7 +261,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                           {localSettings.blogImage3 ? (
                             <img src={localSettings.blogImage3} className="w-full h-full object-cover group-hover:opacity-50 transition-opacity" />
                           ) : (
-                            <div className="w-full h-full flex items-center justify-center text-gray-600 text-[10px] font-black italic">NO COVER IMAGE</div>
+                            <div className="w-full h-full flex items-center justify-center text-gray-600 text-[10px] font-black italic uppercase">No Cover Image</div>
                           )}
                           <button 
                             onClick={() => fileInputBlog3Ref.current?.click()}
@@ -275,7 +273,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                         </div>
                       </div>
                       <div>
-                        <label className="block text-[10px] font-bold text-gray-500 mb-2">네이버 블로그 주소</label>
+                        <label className="block text-[10px] font-bold text-gray-500 mb-2">네이버 블로그 주소 (URL)</label>
                         <input type="text" value={localSettings.blogUrl3} onChange={(e) => setLocalSettings({...localSettings, blogUrl3: e.target.value})} placeholder="새 블로그 주소를 입력하세요" className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-green-500 text-white text-xs" />
                       </div>
                     </div>
@@ -283,7 +281,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 </section>
 
                 <div className="pt-10 border-t border-white/5">
-                  <button onClick={handleSaveSettings} className="bg-white text-black px-12 py-5 rounded-[1.5rem] font-black hover:bg-purple-600 hover:text-white transition-all shadow-xl flex items-center space-x-3">
+                  <button onClick={handleSaveSettings} className="bg-white text-black px-12 py-5 rounded-[1.5rem] font-black hover:bg-purple-600 hover:text-white transition-all shadow-xl flex items-center justify-center space-x-3">
                     <CheckCircle2 className="w-5 h-5" />
                     <span>전체 설정 저장하기</span>
                   </button>
@@ -311,7 +309,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   <form onSubmit={handleSubmitPost} className="space-y-10">
                     <div className="grid md:grid-cols-3 gap-8">
                       <div className="md:col-span-2">
-                        <label className="block text-[10px] font-black text-gray-500 uppercase mb-3 tracking-widest">글 제목</label>
+                        <label className="block text-[10px] font-black text-gray-500 mb-3 uppercase tracking-widest">글 제목</label>
                         <input 
                           ref={titleInputRef}
                           type="text" 
@@ -323,7 +321,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                         />
                       </div>
                       <div>
-                        <label className="block text-[10px] font-black text-gray-500 uppercase mb-3 tracking-widest">카테고리</label>
+                        <label className="block text-[10px] font-black text-gray-500 mb-3 uppercase tracking-widest">카테고리</label>
                         <select 
                           value={newPost.category} 
                           onChange={(e) => setNewPost({...newPost, category: e.target.value as PostCategory})} 
@@ -338,7 +336,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     </div>
 
                     <div>
-                      <label className="block text-[10px] font-black text-gray-500 uppercase mb-3 tracking-widest">상세 내용</label>
+                      <label className="block text-[10px] font-black text-gray-500 mb-3 uppercase tracking-widest">상세 내용</label>
                       <textarea 
                         required 
                         value={newPost.content} 
@@ -350,7 +348,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
                     <div className="grid md:grid-cols-2 gap-10">
                        <div>
-                        <label className="block text-[10px] font-black text-gray-500 uppercase mb-3 tracking-widest flex items-center">
+                        <label className="block text-[10px] font-black text-gray-500 mb-3 uppercase tracking-widest flex items-center">
                           <ImageIcon className="w-3 h-3 mr-2" /> 이미지 업로드 (파일)
                         </label>
                         <div 
@@ -365,7 +363,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                           <div className="flex flex-wrap gap-2 mt-4">
                             {uploadedPostImages.map((img, i) => (
                               <div key={i} className="relative w-14 h-14 rounded-lg overflow-hidden border border-white/10">
-                                <img src={img} className="w-full h-full object-cover" />
+                                <img src={img} className="w-full h-full object-cover" alt="Uploaded Preview" />
                                 <button onClick={() => removeUploadedImage(i)} className="absolute top-0 right-0 bg-red-500 text-white p-0.5 rounded-bl-lg hover:bg-red-600">
                                   <X className="w-3 h-3" />
                                 </button>
@@ -375,7 +373,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                         )}
                       </div>
                       <div>
-                        <label className="block text-[10px] font-black text-gray-500 uppercase mb-3 tracking-widest flex items-center">
+                        <label className="block text-[10px] font-black text-gray-500 mb-3 uppercase tracking-widest flex items-center">
                           <LinkIcon className="w-3 h-3 mr-2" /> 이미지 URL (직접 입력)
                         </label>
                         <textarea 
@@ -399,7 +397,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                         <button 
                           onClick={handleCancelEdit} 
                           type="button" 
-                          className="px-8 py-5 rounded-2xl bg-white/5 text-gray-400 font-bold hover:bg-white/10 hover:text-white transition-all flex items-center space-x-2"
+                          className="px-8 py-5 rounded-2xl bg-white/5 text-gray-400 font-bold hover:bg-white/10 hover:text-white transition-all flex items-center justify-center space-x-2"
                         >
                           <RotateCcw className="w-4 h-4" />
                           <span>수정 취소</span>
@@ -423,7 +421,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                           <div className="flex items-center space-x-6">
                             <div className="w-16 h-16 rounded-xl overflow-hidden bg-white/5 border border-white/10 flex-shrink-0">
                               {post.imageUrls && post.imageUrls.length > 0 ? (
-                                <img src={post.imageUrls[0]} className="w-full h-full object-cover" />
+                                <img src={post.imageUrls[0]} className="w-full h-full object-cover" alt={post.title} />
                               ) : (
                                 <div className="w-full h-full flex items-center justify-center text-gray-700 uppercase font-black text-[10px]">No Img</div>
                               )}
