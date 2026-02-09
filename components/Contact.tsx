@@ -62,21 +62,30 @@ const Contact: React.FC<ContactProps> = ({ settings, posts, onAddPost }) => {
 
               <div className="space-y-8">
                 <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 glass rounded-xl flex items-center justify-center flex-shrink-0 border-purple-100 bg-white">
+                  <div className="w-12 h-12 glass rounded-xl flex items-center justify-center flex-shrink-0 border-purple-100 bg-white shadow-sm">
                     <MapPin className="text-purple-600 w-5 h-5" />
                   </div>
                   <div>
                     <h4 className="font-black mb-1 text-purple-900">찾아오시는 길</h4>
-                    <p className="text-sm text-gray-500">{settings.contactAddress}</p>
+                    <p className="text-sm text-gray-500 font-medium">{settings.contactAddress}</p>
                   </div>
                 </div>
                 <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 glass rounded-xl flex items-center justify-center flex-shrink-0 border-purple-100 bg-white">
+                  <div className="w-12 h-12 glass rounded-xl flex items-center justify-center flex-shrink-0 border-purple-100 bg-white shadow-sm">
                     <Phone className="text-purple-600 w-5 h-5" />
                   </div>
                   <div>
                     <h4 className="font-black mb-1 text-purple-900">전화 번호</h4>
-                    <p className="text-sm text-gray-500">{settings.contactPhone}</p>
+                    <p className="text-sm text-gray-500 font-medium">{settings.contactPhone}</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-4">
+                  <div className="w-12 h-12 glass rounded-xl flex items-center justify-center flex-shrink-0 border-purple-100 bg-white shadow-sm">
+                    <Mail className="text-purple-600 w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="font-black mb-1 text-purple-900">공식 이메일</h4>
+                    <p className="text-sm text-gray-500 font-medium">{settings.contactEmail}</p>
                   </div>
                 </div>
               </div>
