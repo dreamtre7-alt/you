@@ -10,6 +10,14 @@ interface MediaFeedProps {
 const MediaFeed: React.FC<MediaFeedProps> = ({ settings }) => {
   const centers = [
     {
+      no: "Main",
+      title: "꿈뜨레 지역공동체",
+      description: "함께 심고 가꾸는 공동체의 뜰, 꿈뜨레의 공식 소식과 다양한 지역사회 공헌 활동을 전해드립니다.",
+      image: settings.blogImageMain,
+      url: settings.blogUrlMain,
+      badge: "공식 채널"
+    },
+    {
       no: "7호점",
       title: "다함께돌봄센터 7호점",
       description: "우리 아이들의 꿈이 자라는 공간, 7호점의 활기찬 일상과 유익한 프로그램 정보를 만나보세요.",
@@ -23,7 +31,7 @@ const MediaFeed: React.FC<MediaFeedProps> = ({ settings }) => {
       description: "2026년 1월 새롭게 문을 여는 3호점의 준비 과정과 새로운 돌봄 소식을 가장 먼저 전해드립니다.",
       image: settings.blogImage3,
       url: settings.blogUrl3,
-      badge: "26년 1월 오픈 예정"
+      badge: "운영 중"
     }
   ];
 
@@ -58,7 +66,7 @@ const MediaFeed: React.FC<MediaFeedProps> = ({ settings }) => {
                       <span className="text-white/80 text-[8px] font-bold">{center.badge}</span>
                     </div>
                   </div>
-                  {index === 1 && (
+                  {index === 2 && (
                     <div className="absolute top-6 right-6 bg-purple-900 text-white text-[9px] font-black px-4 py-1.5 rounded-full flex items-center shadow-2xl border border-purple-400/30">
                       <Sparkles className="w-3 h-3 mr-2" /> NEW CENTER
                     </div>

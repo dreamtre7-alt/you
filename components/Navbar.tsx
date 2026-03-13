@@ -1,17 +1,20 @@
 
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Share2, Instagram, ChevronDown } from 'lucide-react';
+import { SiteSettings } from '../types';
+import { Menu, X, Share2, Instagram, ChevronDown, BookOpen, Lock, Unlock } from 'lucide-react';
 
 interface NavbarProps {
-  isAdmin: boolean;
   currentView: string;
   setView: (view: any) => void;
+  settings: SiteSettings;
+  isAdmin: boolean;
+  setIsAdmin: (isAdmin: boolean) => void;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ isAdmin, currentView, setView }) => {
+const Navbar: React.FC<NavbarProps> = ({ currentView, setView, settings, isAdmin, setIsAdmin }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [showIntroSub, setShowIntroSub] = useState(false);
+  const [activeSubMenu, setActiveSubMenu] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -34,16 +37,21 @@ const Navbar: React.FC<NavbarProps> = ({ isAdmin, currentView, setView }) => {
         { name: '단체연혁', view: 'ABOUT', anchor: 'history' }
       ]
     },
-    { name: '활동 갤러리', view: 'GALLERY' },
     { name: '공식 블로그', view: 'MEDIA' },
-    { name: '공지사항', view: 'NOTICES' },
-    { name: '후원소식', view: 'SPONSORSHIP' },
-    { name: '문의하기', view: 'CONTACT' },
+    { 
+      name: '후원소식', 
+      view: 'SPONSORSHIP_NEWS',
+      sub: [
+        { name: '후원소식', view: 'SPONSORSHIP_NEWS' },
+        { name: '후원보고', view: 'SPONSORSHIP_REPORT' }
+      ]
+    },
   ];
 
   const handleNavClick = (view: any, anchor?: string) => {
     setView(view);
     setMobileMenuOpen(false);
+    setActiveSubMenu(null);
     if (anchor) {
       setTimeout(() => {
         const element = document.getElementById(anchor);
@@ -71,19 +79,19 @@ const Navbar: React.FC<NavbarProps> = ({ isAdmin, currentView, setView }) => {
             <div 
               key={item.name} 
               className="relative group/item"
-              onMouseEnter={() => item.sub && setShowIntroSub(true)}
-              onMouseLeave={() => item.sub && setShowIntroSub(false)}
+              onMouseEnter={() => item.sub && setActiveSubMenu(item.name)}
+              onMouseLeave={() => item.sub && setActiveSubMenu(null)}
             >
               <button 
                 onClick={() => handleNavClick(item.view)}
-                className={`text-xs font-black uppercase tracking-[0.2em] transition-all flex items-center ${currentView === item.view ? 'text-purple-900' : 'text-[#111111]/60 hover:text-purple-900'}`}
+                className={`text-xs font-black uppercase tracking-[0.2em] transition-all flex items-center ${currentView === item.view || (item.sub && item.sub.some(s => s.view === currentView)) ? 'text-purple-900' : 'text-[#111111]/60 hover:text-purple-900'}`}
               >
                 {item.name}
                 {item.sub && <ChevronDown className="ml-1.5 w-3.5 h-3.5 transition-transform group-hover/item:rotate-180" />}
               </button>
               
               {item.sub && (
-                <div className={`absolute top-full left-0 pt-6 transition-all duration-300 ${showIntroSub ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'}`}>
+                <div className={`absolute top-full left-0 pt-6 transition-all duration-300 ${activeSubMenu === item.name ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'}`}>
                   <div className="glass p-5 rounded-[2rem] border-purple-100 w-48 flex flex-col space-y-4 bg-white shadow-2xl">
                     {item.sub.map(sub => (
                       <button 
@@ -100,6 +108,16 @@ const Navbar: React.FC<NavbarProps> = ({ isAdmin, currentView, setView }) => {
             </div>
           ))}
           <div className="flex items-center space-x-5 pl-6 border-l border-purple-100">
+            <button 
+              onClick={() => setIsAdmin(!isAdmin)}
+              className={`p-2 rounded-xl transition-all ${isAdmin ? 'bg-purple-900 text-white shadow-lg' : 'text-gray-300 hover:text-purple-900'}`}
+              title={isAdmin ? '관리자 모드 끄기' : '관리자 모드 켜기'}
+            >
+              {isAdmin ? <Unlock className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
+            </button>
+            <a href={settings.blogUrlMain} target="_blank" rel="noopener noreferrer" title="공식 블로그">
+              <BookOpen className="w-5 h-5 text-gray-300 cursor-pointer hover:text-black transition-colors" />
+            </a>
             <Instagram className="w-5 h-5 text-gray-300 cursor-pointer hover:text-black transition-colors" />
             <Share2 className="w-5 h-5 text-gray-300 cursor-pointer hover:text-black transition-colors" />
           </div>

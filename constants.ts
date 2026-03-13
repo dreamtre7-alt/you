@@ -34,14 +34,16 @@ export const INITIAL_SETTINGS: SiteSettings = {
   contactPhone: "055-232-5412",
   contactAddress: "경상남도 창원시 마산회원구 내서읍 삼계6길40",
   sponsorshipAccounts: [
-    { bankName: "경남은행", accountNumber: "계좌 준비 중", accountHolder: "꿈뜨레" },
+    { bankName: "경남은행", accountNumber: "207-0209-3456-04", accountHolder: "창원시 다함께돌봄센터 7호점" },
     { bankName: "농협은행", accountNumber: "계좌 준비 중", accountHolder: "꿈뜨레" },
     { bankName: "국민은행", accountNumber: "계좌 준비 중", accountHolder: "꿈뜨레" }
   ],
   blogUrl7: "https://m.blog.naver.com/zaminan",
-  blogUrl3: "https://m.blog.naver.com/zaminan",
+  blogUrl3: "https://blog.naver.com/dadol3-5664",
+  blogUrlMain: "https://blog.naver.com/dreamtr7",
   blogImage7: "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=800",
-  blogImage3: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=800"
+  blogImage3: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=800",
+  blogImageMain: "https://images.unsplash.com/photo-1596464716127-f2a82984de30?w=800"
 };
 
 export const INITIAL_POSTS: Post[] = [];
