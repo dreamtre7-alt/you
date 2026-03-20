@@ -4,7 +4,7 @@ import { Post, SiteSettings } from './types';
 export const INITIAL_SETTINGS: SiteSettings = {
   siteName: "꿈뜨레 지역공동체",
   slogan: "창원의 내일을 함께 심고 가꾸는 빛나는 공동체",
-  primaryColor: "#5B21B6",
+  primaryColor: "#1E40AF",
   themeBrightness: 100,
   vision: "모든 주민이 주인이 되어 서로를 돌보는 행복한 지역사회",
   mission: "창원시의 자생적 공동체 역량 강화와 도시 재생의 혁신을 선도합니다.",
@@ -30,8 +30,9 @@ export const INITIAL_SETTINGS: SiteSettings = {
 
 2025년 12월 20일`,
   representativeName: "이한기",
-  contactEmail: "dreamtre7@gmail.com",
-  contactPhone: "055-232-5412",
+  representativePhoto: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800",
+  contactEmail: "dreamtre7@gmail.com, zaminan@naver.com",
+  contactPhone: "055-232-4349",
   contactAddress: "경상남도 창원시 마산회원구 내서읍 삼계6길40",
   sponsorshipAccounts: [
     { bankName: "경남은행", accountNumber: "207-0209-3456-04", accountHolder: "창원시 다함께돌봄센터 7호점" },
@@ -43,7 +44,8 @@ export const INITIAL_SETTINGS: SiteSettings = {
   blogUrlMain: "https://blog.naver.com/dreamtr7",
   blogImage7: "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=800",
   blogImage3: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=800",
-  blogImageMain: "https://images.unsplash.com/photo-1596464716127-f2a82984de30?w=800"
+  blogImageMain: "https://images.unsplash.com/photo-1596464716127-f2a82984de30?w=800",
+  heroImage: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2000"
 };
 
 export const INITIAL_POSTS: Post[] = [];

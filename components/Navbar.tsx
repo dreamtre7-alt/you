@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { SiteSettings } from '../types';
 import { Menu, X, Share2, Instagram, ChevronDown, BookOpen, Lock, Unlock } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 
 interface NavbarProps {
   currentView: string;
@@ -34,9 +35,11 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, setView, settings, isAdmin
       view: 'ABOUT',
       sub: [
         { name: '대표인사말', view: 'ABOUT', anchor: 'greeting' },
-        { name: '단체연혁', view: 'ABOUT', anchor: 'history' }
+        { name: '단체연혁', view: 'ABOUT', anchor: 'history' },
+        { name: '단체활동', view: 'ACTIVITIES' }
       ]
     },
+    { name: '공지사항', view: 'NOTICES' },
     { name: '공식 블로그', view: 'MEDIA' },
     { 
       name: '후원소식', 
@@ -61,21 +64,26 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, setView, settings, isAdmin
   };
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? 'py-4 glass border-b border-purple-100/50 shadow-2xl bg-white/90' : 'py-8 bg-transparent'}`}>
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-md py-3' : 'bg-white/90 backdrop-blur-sm py-5'}`}>
       <div className="container mx-auto px-6 flex items-center justify-between">
-        <div className="flex items-center space-x-4 group cursor-pointer" onClick={() => handleNavClick('HOME')}>
-          <div className="w-12 h-12 bg-black rounded-2xl flex items-center justify-center font-black text-white text-2xl shadow-xl group-hover:bg-purple-900 transition-all duration-500">
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="flex items-center space-x-3 group cursor-pointer" 
+          onClick={() => handleNavClick('HOME')}
+        >
+          <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center font-display text-white text-xl shadow-lg group-hover:bg-blue-700 transition-all duration-300 group-hover:rotate-6">
             꿈
           </div>
           <div className="flex flex-col">
-            <span className="text-2xl font-black tracking-tighter leading-none text-[#111111]">꿈뜨레</span>
-            <span className="text-[9px] font-black text-purple-900 uppercase tracking-[0.3em] mt-1 opacity-60">Changwon Community</span>
+            <span className="text-xl font-display tracking-tight leading-none text-blue-700 drop-shadow-sm whitespace-nowrap">{settings.siteName}</span>
+            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1 whitespace-nowrap">Community Center</span>
           </div>
-        </div>
+        </motion.div>
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-10">
-          {navItems.map((item) => (
+          {navItems.map((item, idx) => (
             <div 
               key={item.name} 
               className="relative group/item"
@@ -84,48 +92,57 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, setView, settings, isAdmin
             >
               <button 
                 onClick={() => handleNavClick(item.view)}
-                className={`text-xs font-black uppercase tracking-[0.2em] transition-all flex items-center ${currentView === item.view || (item.sub && item.sub.some(s => s.view === currentView)) ? 'text-purple-900' : 'text-[#111111]/60 hover:text-purple-900'}`}
+                className={`text-sm font-bold transition-all flex items-center py-2 ${currentView === item.view || (item.sub && item.sub.some(s => s.view === currentView)) ? 'text-blue-600' : 'text-gray-600 hover:text-blue-600'}`}
               >
                 {item.name}
-                {item.sub && <ChevronDown className="ml-1.5 w-3.5 h-3.5 transition-transform group-hover/item:rotate-180" />}
+                {item.sub && <ChevronDown className={`ml-1 w-4 h-4 transition-transform duration-300 ${activeSubMenu === item.name ? 'rotate-180' : ''}`} />}
               </button>
               
-              {item.sub && (
-                <div className={`absolute top-full left-0 pt-6 transition-all duration-300 ${activeSubMenu === item.name ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'}`}>
-                  <div className="glass p-5 rounded-[2rem] border-purple-100 w-48 flex flex-col space-y-4 bg-white shadow-2xl">
-                    {item.sub.map(sub => (
-                      <button 
-                        key={sub.name} 
-                        onClick={() => handleNavClick(sub.view, sub.anchor)}
-                        className="text-[11px] font-black text-left text-gray-400 hover:text-purple-900 transition-colors uppercase tracking-[0.1em]"
-                      >
-                        {sub.name}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
+              <AnimatePresence>
+                {item.sub && activeSubMenu === item.name && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    className="absolute top-full left-1/2 -translate-x-1/2 pt-4"
+                  >
+                    <div className="bg-white p-4 rounded-xl border border-gray-100 w-48 flex flex-col space-y-2 shadow-xl">
+                      {item.sub.map(sub => (
+                        <button 
+                          key={sub.name} 
+                          onClick={() => handleNavClick(sub.view, sub.anchor)}
+                          className="text-xs font-semibold text-left text-gray-500 hover:text-blue-600 hover:bg-blue-50 px-3 py-2 rounded-lg transition-all"
+                        >
+                          {sub.name}
+                        </button>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           ))}
-          <div className="flex items-center space-x-5 pl-6 border-l border-purple-100">
-            <button 
+          
+          <div className="flex items-center space-x-4 pl-8 border-l border-gray-100">
+            <motion.button 
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => setIsAdmin(!isAdmin)}
-              className={`p-2 rounded-xl transition-all ${isAdmin ? 'bg-purple-900 text-white shadow-lg' : 'text-gray-300 hover:text-purple-900'}`}
+              className={`p-2 rounded-lg transition-all ${isAdmin ? 'bg-blue-600 text-white shadow-md' : 'text-gray-400 hover:text-blue-600 bg-gray-50'}`}
               title={isAdmin ? '관리자 모드 끄기' : '관리자 모드 켜기'}
             >
               {isAdmin ? <Unlock className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
-            </button>
-            <a href={settings.blogUrlMain} target="_blank" rel="noopener noreferrer" title="공식 블로그">
-              <BookOpen className="w-5 h-5 text-gray-300 cursor-pointer hover:text-black transition-colors" />
+            </motion.button>
+            <a href={settings.blogUrlMain} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-blue-600 transition-colors">
+              <BookOpen className="w-5 h-5" />
             </a>
-            <Instagram className="w-5 h-5 text-gray-300 cursor-pointer hover:text-black transition-colors" />
-            <Share2 className="w-5 h-5 text-gray-300 cursor-pointer hover:text-black transition-colors" />
+            <Instagram className="w-5 h-5 text-gray-400 cursor-pointer hover:text-pink-600 transition-colors" />
           </div>
         </div>
 
         {/* Mobile Toggle */}
         <button 
-          className="md:hidden p-4 glass rounded-2xl border-purple-200 text-black active:scale-90 transition-all"
+          className="md:hidden p-2 text-gray-900"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
           {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -133,38 +150,46 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, setView, settings, isAdmin
       </div>
 
       {/* Mobile Menu Overlay */}
-      <div className={`md:hidden fixed inset-0 top-0 h-screen w-full bg-white z-[-1] transition-all duration-700 ease-in-out ${mobileMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-full pointer-events-none'}`}>
-        <div className="flex flex-col items-center justify-center h-full space-y-10 px-8">
-          <div className="text-[10px] font-black text-purple-900 uppercase tracking-[0.6em] mb-6 opacity-40">Navigation</div>
-          {navItems.map((item) => (
-            <div key={item.name} className="flex flex-col items-center">
-              <button 
-                className={`text-4xl font-black transition-all tracking-tighter ${currentView === item.view ? 'text-purple-900 scale-110' : 'text-[#111111] hover:text-purple-900'}`}
-                onClick={() => handleNavClick(item.view)}
-              >
-                {item.name}
-              </button>
-              {item.sub && (
-                <div className="flex space-x-8 mt-6">
-                  {item.sub.map(sub => (
-                    <button 
-                      key={sub.name} 
-                      onClick={() => handleNavClick(sub.view, sub.anchor)}
-                      className="text-sm font-black text-gray-400 hover:text-purple-900 transition-colors uppercase tracking-[0.2em]"
-                    >
-                      {sub.name}
-                    </button>
-                  ))}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div 
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="md:hidden bg-white border-t border-gray-100 overflow-hidden"
+          >
+            <div className="container mx-auto px-6 py-8 flex flex-col space-y-6">
+              {navItems.map((item) => (
+                <div key={item.name} className="flex flex-col space-y-4">
+                  <button 
+                    className={`text-2xl font-bold text-left ${currentView === item.view ? 'text-blue-600' : 'text-gray-900'}`}
+                    onClick={() => handleNavClick(item.view)}
+                  >
+                    {item.name}
+                  </button>
+                  {item.sub && (
+                    <div className="flex flex-col space-y-3 pl-4 border-l-2 border-gray-100">
+                      {item.sub.map(sub => (
+                        <button 
+                          key={sub.name} 
+                          onClick={() => handleNavClick(sub.view, sub.anchor)}
+                          className="text-sm font-semibold text-gray-500 hover:text-blue-600 text-left"
+                        >
+                          {sub.name}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
-              )}
+              ))}
+              <div className="pt-6 flex space-x-6 border-t border-gray-100">
+                <Instagram className="w-6 h-6 text-gray-400" />
+                <Share2 className="w-6 h-6 text-gray-400" />
+              </div>
             </div>
-          ))}
-          <div className="pt-16 flex space-x-10">
-            <Instagram className="w-10 h-10 text-gray-300 hover:text-black" />
-            <Share2 className="w-10 h-10 text-gray-300 hover:text-black" />
-          </div>
-        </div>
-      </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 };

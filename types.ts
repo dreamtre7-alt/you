@@ -1,7 +1,7 @@
 
-export type PostCategory = 'SPONSORSHIP_NEWS' | 'SPONSORSHIP_REPORT';
+export type PostCategory = 'SPONSORSHIP_NEWS' | 'SPONSORSHIP_REPORT' | 'NOTICES';
 
-export type View = 'HOME' | 'ABOUT' | 'SPONSORSHIP_NEWS' | 'SPONSORSHIP_REPORT' | 'MEDIA';
+export type View = 'HOME' | 'ABOUT' | 'ACTIVITIES' | 'SPONSORSHIP_NEWS' | 'SPONSORSHIP_REPORT' | 'MEDIA' | 'NOTICES';
 
 export interface Post {
   id: string;
@@ -29,6 +29,7 @@ export interface SiteSettings {
   history: string;
   representativeGreeting: string;
   representativeName: string;
+  representativePhoto: string;
   contactEmail: string;
   contactPhone: string;
   contactAddress: string;
@@ -39,6 +40,7 @@ export interface SiteSettings {
   blogImage7: string;
   blogImage3: string;
   blogImageMain: string;
+  heroImage: string;
 }
 
 export interface AppState {

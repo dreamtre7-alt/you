@@ -9,21 +9,38 @@ interface FooterProps {
 
 const Footer: React.FC<FooterProps> = ({ settings }) => {
   const externalLinks = [
-    { name: '국세청', url: 'https://www.nts.go.kr' },
-    { name: '창원시청', url: 'https://www.changwon.go.kr' },
-    { name: '국민권익위원회', url: 'https://www.acrc.go.kr' }
+    { 
+      name: '국세청', 
+      url: 'https://www.nts.go.kr',
+      logo: 'https://www.nts.go.kr/images/common/logo.png' 
+    },
+    { 
+      name: '창원시청', 
+      url: 'https://www.changwon.go.kr',
+      logo: 'https://www.changwon.go.kr/images/common/logo.png'
+    },
+    { 
+      name: '국민권익위원회', 
+      url: 'https://www.acrc.go.kr',
+      logo: 'https://www.acrc.go.kr/images/common/logo.png'
+    },
+    {
+      name: '1365 자원봉사',
+      url: 'https://www.1365.go.kr',
+      logo: 'https://www.1365.go.kr/images/common/logo.png'
+    }
   ];
 
   return (
-    <footer className="py-20 bg-purple-50/50 border-t border-purple-100">
+    <footer className="py-20 bg-slate-50 border-t border-slate-200">
       <div className="container mx-auto px-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-16">
           <div className="mb-8 md:mb-0">
             <div className="flex items-center space-x-2 mb-4">
-              <div className="w-8 h-8 purple-gradient rounded-lg flex items-center justify-center font-bold text-white shadow-sm">꿈</div>
-              <span className="text-2xl font-black tracking-tight text-purple-900">{settings.siteName}</span>
+              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center font-display text-white shadow-sm">꿈</div>
+              <span className="text-2xl font-bold tracking-tight text-slate-900">{settings.siteName}</span>
             </div>
-            <p className="text-gray-500 text-sm max-w-sm font-light leading-relaxed">
+            <p className="text-slate-500 text-sm max-w-sm leading-relaxed">
               창원시 비영리 민간단체 등록 제 2023-001호 <br/>
               주민과 함께 행복한 도시를 디자인합니다.
             </p>
@@ -35,15 +52,15 @@ const Footer: React.FC<FooterProps> = ({ settings }) => {
                 href={settings.blogUrlMain} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="w-12 h-12 glass rounded-full flex items-center justify-center hover:bg-purple-600 hover:text-white transition-all border-purple-100 text-purple-600 shadow-sm bg-white"
+                className="w-12 h-12 bg-white rounded-full flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all border border-slate-200 text-blue-600 shadow-sm"
                 title="공식 블로그"
               >
                 <BookOpen className="w-5 h-5" />
               </a>
-              <a href="#" className="w-12 h-12 glass rounded-full flex items-center justify-center hover:bg-purple-600 hover:text-white transition-all border-purple-100 text-purple-600 shadow-sm bg-white">
+              <a href="#" className="w-12 h-12 bg-white rounded-full flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all border border-slate-200 text-blue-600 shadow-sm">
                 <Instagram className="w-5 h-5" />
               </a>
-              <a href="#" className="w-12 h-12 glass rounded-full flex items-center justify-center hover:bg-purple-600 hover:text-white transition-all border-purple-100 text-purple-600 shadow-sm bg-white">
+              <a href="#" className="w-12 h-12 bg-white rounded-full flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all border border-slate-200 text-blue-600 shadow-sm">
                 <MessageCircle className="w-5 h-5" />
               </a>
             </div>
@@ -51,33 +68,42 @@ const Footer: React.FC<FooterProps> = ({ settings }) => {
         </div>
 
         {/* External Public Links Section */}
-        <div className="mb-12 p-8 glass rounded-[2rem] border-purple-100 bg-white/40">
-          <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12">
-            <span className="text-[10px] font-black text-purple-900 uppercase tracking-[0.3em] opacity-40">유관기관 바로가기</span>
-            <div className="flex flex-wrap justify-center gap-6 md:gap-10">
+        <div className="mb-12 p-8 bg-white rounded-[2rem] border border-slate-200">
+          <div className="flex flex-col items-center space-y-8">
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.3em]">유관기관 바로가기</span>
+            <div className="flex flex-wrap justify-center gap-8 md:gap-16">
               {externalLinks.map((link) => (
                 <a 
                   key={link.name}
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center text-sm font-black text-gray-500 hover:text-purple-900 transition-all group"
+                  className="flex flex-col items-center group transition-all"
                 >
-                  {link.name}
-                  <ExternalLink className="ml-1.5 w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <div className="w-32 h-12 mb-3 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-center p-2 group-hover:border-blue-200 group-hover:bg-blue-50/30 transition-all overflow-hidden">
+                    <img 
+                      src={`https://www.google.com/s2/favicons?domain=${new URL(link.url).hostname}&sz=128`} 
+                      alt={link.name}
+                      className="h-6 w-auto object-contain transition-all opacity-100"
+                      referrerPolicy="no-referrer"
+                    />
+                  </div>
+                  <span className="text-xs font-bold text-slate-500 group-hover:text-blue-700 transition-colors">
+                    {link.name}
+                  </span>
                 </a>
               ))}
             </div>
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row justify-between pt-12 border-t border-purple-100 text-[10px] md:text-xs text-purple-300 uppercase tracking-widest font-bold">
+        <div className="flex flex-col md:flex-row justify-between pt-12 border-t border-slate-200 text-[10px] md:text-xs text-slate-400 uppercase tracking-widest font-bold">
           <div className="space-y-1 md:space-y-0 md:space-x-8 mb-4 md:mb-0">
-            <span className="text-purple-400">© 2024 KKUMTTRE COMMUNITY. ALL RIGHTS RESERVED.</span>
-            <a href="#" className="hover:text-purple-600 transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-purple-600 transition-colors">Terms of Service</a>
+            <span>© 2024 KKUMTTRE COMMUNITY. ALL RIGHTS RESERVED.</span>
+            <a href="#" className="hover:text-blue-600 transition-colors">Privacy Policy</a>
+            <a href="#" className="hover:text-blue-600 transition-colors">Terms of Service</a>
           </div>
-          <div className="text-purple-400">
+          <div>
             DESIGNED BY CREATIVE LAB
           </div>
         </div>

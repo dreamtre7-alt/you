@@ -37,7 +37,8 @@
       ],
       "contactPoint": {
         "@type": "ContactPoint",
-        "telephone": "055-232-5412",
+        "telephone": "055-232-4349",
+        "email": "dreamtre7@gmail.com, zaminan@naver.com",
         "contactType": "customer service"
       },
       "address": {
@@ -52,111 +53,14 @@
     }
     </script>
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@100..900&family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-purple: #5B21B6;
-            --primary-purple-rgb: 91, 33, 182;
-            --deep-black: #111111;
-            --theme-brightness: 1;
-            --bg-lavender: #FAF5FF;
-        }
-        body {
-            font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
-            background-color: var(--bg-lavender);
-            color: var(--deep-black);
-            scroll-behavior: smooth;
-            overflow-x: hidden;
-            margin: 0;
-            padding: 0;
-        }
-        
-        /* 은은하고 감각적인 노이즈/메쉬 레이어 */
-        .noise-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1000;
-            opacity: 0.02;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-        }
-
-        .mesh-gradient-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
-            background: #ffffff;
-        }
-
-        .blob {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.4;
-            animation: move-blob 35s infinite alternate ease-in-out;
-            will-change: transform;
-        }
-
-        @keyframes move-blob {
-            0% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(8vw, -12vh) scale(1.15); }
-            66% { transform: translate(-6vw, 12vh) scale(0.85); }
-            100% { transform: translate(6vw, -6vh) scale(1.05); }
-        }
-
-        .glass {
-            background: rgba(255, 255, 255, 0.45);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 0 8px 32px 0 rgba(91, 33, 182, 0.04);
-        }
-
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #F3E8FF; }
-        ::-webkit-scrollbar-thumb { background: #A78BFA; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #5B21B6; }
-
-        #root {
-            position: relative;
-            z-index: 1;
-        }
-    </style>
-<script type="importmap">
-{
-  "imports": {
-    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
-    "react/": "https://esm.sh/react@^19.2.4/",
-    "react": "https://esm.sh/react@^19.2.4",
-    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
-    "@google/genai": "https://esm.sh/@google/genai@^1.40.0"
-  }
-}
-</script>
-<link rel="stylesheet" href="/index.css">
+    <link rel="stylesheet" href="/index.css">
 </head>
 <body>
     <div class="noise-overlay"></div>
-    <div class="mesh-gradient-container">
-        <div class="blob w-[600px] h-[600px] bg-purple-100 top-[-15%] left-[-10%] animate-[move-blob_45s_infinite]"></div>
-        <div class="blob w-[500px] h-[500px] bg-indigo-50 bottom-[-10%] right-[-5%] animate-[move-blob_40s_infinite_reverse]"></div>
-        <div class="blob w-[450px] h-[450px] bg-purple-50 top-[35%] left-[25%] animate-[move-blob_55s_infinite_ease-in-out]"></div>
-    </div>
     
     <div id="root"></div>
 
     <!-- 리액트 앱 진입점 (확장자 포함하여 정확히 명시) -->
     <script type="module" src="./index.tsx"></script>
-<script type="module" src="/index.tsx"></script>
 </body>
 </html>
