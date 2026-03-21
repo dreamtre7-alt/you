@@ -9,14 +9,7 @@ interface ActivitiesProps {
 }
 
 const Activities: React.FC<ActivitiesProps> = ({ settings }) => {
-  // 30 placeholder images as the user provided 30 images
-  const activities = Array.from({ length: 30 }).map((_, i) => ({
-    id: i + 1,
-    title: `활동 사진 ${i + 1}`,
-    date: '2024-2025',
-    location: '꿈뜨레 지역공동체',
-    imageUrl: `https://picsum.photos/seed/kkumttre-activity-${i + 1}/800/600`
-  }));
+  const activities = settings.activityPhotos || [];
 
   return (
     <div className="pt-24 pb-20 bg-gray-50 min-h-screen">

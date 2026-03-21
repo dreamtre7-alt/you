@@ -30,10 +30,14 @@ export const INITIAL_SETTINGS: SiteSettings = {
 
 2025년 12월 20일`,
   representativeName: "이한기",
-  representativePhoto: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800",
+  representativePhoto: "https://storage.googleapis.com/static-assets-public/input_file_2.png",
+  representativeBio: "꿈뜨레 지역공동체 대표\n창원시 다함께돌봄센터 7호점 센터장\n지역사회 공동체 활성화 전문가",
   contactEmail: "dreamtre7@gmail.com, zaminan@naver.com",
   contactPhone: "055-232-4349",
-  contactAddress: "경상남도 창원시 마산회원구 내서읍 삼계6길40",
+  contactAddresses: [
+    "창원시 마산회원구 내서읍 삼계6길 12 301호",
+    "창원시 마산회원구 내서읍 삼계6길 40 202호"
+  ],
   sponsorshipAccounts: [
     { bankName: "경남은행", accountNumber: "207-0209-3456-04", accountHolder: "창원시 다함께돌봄센터 7호점" },
     { bankName: "농협은행", accountNumber: "계좌 준비 중", accountHolder: "꿈뜨레" },
@@ -45,7 +49,14 @@ export const INITIAL_SETTINGS: SiteSettings = {
   blogImage7: "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=800",
   blogImage3: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=800",
   blogImageMain: "https://images.unsplash.com/photo-1596464716127-f2a82984de30?w=800",
-  heroImage: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2000"
+  heroImage: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2000",
+  activityPhotos: Array.from({ length: 30 }).map((_, i) => ({
+    id: (i + 1).toString(),
+    title: `활동 사진 ${i + 1}`,
+    date: '2024-2025',
+    location: '꿈뜨레 지역공동체',
+    imageUrl: `https://picsum.photos/seed/kkumttre-activity-${i + 1}/800/600`
+  }))
 };
 
 export const INITIAL_POSTS: Post[] = [];

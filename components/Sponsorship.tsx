@@ -11,103 +11,22 @@ interface SponsorshipProps {
   onDeletePost: (id: string) => void;
   currentCategory: PostCategory;
   isAdmin: boolean;
+  onOpenAdmin: (category: PostCategory) => void;
 }
 
-const Sponsorship: React.FC<SponsorshipProps> = ({ posts, settings, onAddPost, onDeletePost, currentCategory, isAdmin }) => {
+const Sponsorship: React.FC<SponsorshipProps> = ({ posts, settings, onAddPost, onDeletePost, currentCategory, isAdmin, onOpenAdmin }) => {
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
-  const [isAddingPost, setIsAddingPost] = useState(false);
-  const [newPost, setNewPost] = useState({
-    title: '',
-    content: '',
-    imageUrls: ['']
-  });
-  const [uploading, setUploading] = useState(false);
-
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (!files) return;
-
-    setUploading(true);
-    const fileArray: File[] = Array.from(files);
-    const readers = fileArray.map((file: File) => {
-      return new Promise<string>((resolve) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result as string);
-        reader.readAsDataURL(file);
-      });
-    });
-
-    try {
-      const base64Images = await Promise.all(readers);
-      setNewPost(prev => ({
-        ...prev,
-        imageUrls: [...prev.imageUrls.filter(url => url !== ''), ...base64Images]
-      }));
-    } catch (error) {
-      console.error("Error reading files:", error);
-    } finally {
-      setUploading(false);
-    }
-  };
-
-  const handleAddImageUrl = () => {
-    setNewPost({ ...newPost, imageUrls: [...newPost.imageUrls, ''] });
-  };
-
-  const handleRemoveImageUrl = (index: number) => {
-    const updatedUrls = newPost.imageUrls.filter((_, i) => i !== index);
-    setNewPost({ ...newPost, imageUrls: updatedUrls.length > 0 ? updatedUrls : [''] });
-  };
-
-  const handleImageUrlChange = (index: number, value: string) => {
-    const updatedUrls = [...newPost.imageUrls];
-    updatedUrls[index] = value;
-    setNewPost({ ...newPost, imageUrls: updatedUrls });
-  };
-
-  const handleAddPost = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    const isReport = currentCategory === 'SPONSORSHIP_REPORT';
-    const isNotice = currentCategory === 'NOTICES';
-    const title = (isReport || isNotice) ? (newPost.title || (isReport ? '후원보고' : '공지사항')) : newPost.title;
-    const content = newPost.content;
-    const finalImageUrls = newPost.imageUrls.map(url => url.trim()).filter(url => url !== '');
-
-    if (!title || !content) {
-      alert('제목과 내용을 입력해주세요.');
-      return;
-    }
-    
-    if (isReport && finalImageUrls.length === 0) {
-      alert('최소 한 장의 사진을 추가해주세요.');
-      return;
-    }
-
-    const post: Post = {
-      id: Date.now().toString(),
-      title: title,
-      content,
-      date: isReport ? '' : new Date().toLocaleDateString('ko-KR'),
-      category: currentCategory,
-      imageUrls: finalImageUrls
-    };
-
-    onAddPost(post);
-    setIsAddingPost(false);
-    setNewPost({ title: '', content: '', imageUrls: [''] });
-  };
 
   const getCategoryInfo = () => {
     switch (currentCategory) {
       case 'SPONSORSHIP_NEWS':
-        return { title: '후원 소식', label: 'Sponsorship News' };
+        return { title: '후원 소식', label: '후원 소식' };
       case 'SPONSORSHIP_REPORT':
-        return { title: '후원 보고', label: 'Sponsorship Report' };
+        return { title: '후원 보고', label: '후원 보고' };
       case 'NOTICES':
-        return { title: '공지사항', label: 'Notices' };
+        return { title: '공지사항', label: '공지사항' };
       default:
-        return { title: '소식', label: 'News' };
+        return { title: '소식', label: '소식' };
     }
   };
 
@@ -260,12 +179,12 @@ const Sponsorship: React.FC<SponsorshipProps> = ({ posts, settings, onAddPost, o
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
             <div>
-              <h2 className="text-sm uppercase tracking-[0.3em] text-blue-700 font-bold mb-4">Transparency</h2>
+              <h2 className="text-sm uppercase tracking-[0.3em] text-blue-700 font-bold mb-4">투명성</h2>
               <h3 className="text-4xl md:text-5xl font-bold text-slate-900">{categoryTitle}</h3>
             </div>
             {isAdmin && (
               <button 
-                onClick={() => setIsAddingPost(true)}
+                onClick={() => onOpenAdmin(currentCategory)}
                 className="flex items-center space-x-2 bg-blue-900 text-white px-8 py-4 rounded-2xl font-bold hover:bg-slate-900 transition-all shadow-lg active:scale-95"
               >
                 <Plus className="w-5 h-5" />
@@ -309,7 +228,7 @@ const Sponsorship: React.FC<SponsorshipProps> = ({ posts, settings, onAddPost, o
                       <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                       {post.imageUrls.length > 1 && (
                         <div className="absolute top-6 right-6 bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full text-[10px] font-bold text-blue-900 flex items-center shadow-sm">
-                          <ImageIcon className="w-3.5 h-3.5 mr-2" /> +{post.imageUrls.length - 1} Photos
+                          <ImageIcon className="w-3.5 h-3.5 mr-2" /> +{post.imageUrls.length - 1} 사진
                         </div>
                       )}
                     </div>
@@ -318,7 +237,7 @@ const Sponsorship: React.FC<SponsorshipProps> = ({ posts, settings, onAddPost, o
                   <div className="p-10 flex-1 flex flex-col">
                     <div className="flex items-center justify-between mb-6">
                       <span className="text-[10px] font-bold text-blue-700 uppercase tracking-widest px-3 py-1 rounded-full bg-blue-50">
-                        {post.category !== 'SPONSORSHIP_REPORT' ? post.date : 'Report'}
+                        {post.category !== 'SPONSORSHIP_REPORT' ? post.date : '보고'}
                       </span>
                     </div>
                     <h4 className="text-2xl font-bold text-slate-900 mb-4 leading-tight group-hover:text-blue-700 transition-colors">
@@ -361,7 +280,7 @@ const Sponsorship: React.FC<SponsorshipProps> = ({ posts, settings, onAddPost, o
             >
               <div className="p-10 border-b border-slate-100 flex items-center justify-between bg-slate-50/30">
                 <div>
-                  <span className="text-[10px] font-bold text-blue-700 uppercase tracking-[0.4em]">Sponsorship Outcome</span>
+                  <span className="text-[10px] font-bold text-blue-700 uppercase tracking-[0.4em]">후원 결과</span>
                   <h3 className="text-3xl font-bold mt-2 text-slate-900">{selectedPost.title}</h3>
                 </div>
                 <button 
@@ -388,131 +307,6 @@ const Sponsorship: React.FC<SponsorshipProps> = ({ posts, settings, onAddPost, o
         )}
       </AnimatePresence>
 
-      {/* Add Post Modal */}
-      <AnimatePresence>
-        {isAddingPost && (
-          <div className="fixed inset-0 z-[110] flex items-center justify-center p-6">
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsAddingPost(false)}
-              className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
-            />
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative w-full max-w-2xl bg-white rounded-[2rem] shadow-2xl overflow-hidden"
-              onClick={e => e.stopPropagation()}
-            >
-              <div className="p-10 border-b border-slate-100 flex items-center justify-between bg-slate-50/30">
-                <h3 className="text-3xl font-bold text-slate-900">
-                  {currentCategory === 'SPONSORSHIP_NEWS' ? '새 후원 소식 올리기' : '후원 보고 사진 올리기'}
-                </h3>
-                <button 
-                  onClick={() => setIsAddingPost(false)} 
-                  className="p-3 hover:bg-white rounded-full transition-all hover:rotate-90"
-                >
-                  <X className="w-8 h-8 text-slate-400" />
-                </button>
-              </div>
-              <form onSubmit={handleAddPost} className="p-10 space-y-6">
-                {currentCategory !== 'SPONSORSHIP_REPORT' && (
-                  <>
-                    <div>
-                      <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">제목</label>
-                      <input 
-                        type="text" 
-                        value={newPost.title}
-                        onChange={e => setNewPost({...newPost, title: e.target.value})}
-                        className="w-full px-6 py-4 rounded-2xl bg-slate-50/50 border border-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all"
-                        placeholder="제목을 입력하세요"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">내용</label>
-                      <textarea 
-                        value={newPost.content}
-                        onChange={e => setNewPost({...newPost, content: e.target.value})}
-                        className="w-full px-6 py-4 rounded-2xl bg-slate-50/50 border border-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all h-40 resize-none"
-                        placeholder="내용을 입력하세요"
-                        required
-                      />
-                    </div>
-                  </>
-                )}
-
-                {(currentCategory === 'SPONSORSHIP_REPORT' || currentCategory === 'NOTICES') ? (
-                  <div>
-                    <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">사진 첨부</label>
-                    <div className="space-y-4">
-                      <div className="grid grid-cols-3 gap-4">
-                        {newPost.imageUrls.filter(url => url !== '').map((url, idx) => (
-                          <div key={idx} className="relative aspect-square rounded-2xl overflow-hidden border border-slate-100 group">
-                            <img src={url} className="w-full h-full object-cover" />
-                            <button 
-                              type="button" 
-                              onClick={() => handleRemoveImageUrl(idx)}
-                              className="absolute top-2 right-2 p-1.5 bg-black/50 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                            >
-                              <X className="w-4 h-4" />
-                            </button>
-                          </div>
-                        ))}
-                        <label className="aspect-square rounded-2xl border-2 border-dashed border-slate-200 flex flex-col items-center justify-center cursor-pointer hover:bg-slate-50 transition-colors">
-                          <Plus className="w-8 h-8 text-slate-300 mb-2" />
-                          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Upload</span>
-                          <input type="file" multiple accept="image/*" className="hidden" onChange={handleFileChange} />
-                        </label>
-                      </div>
-                      {uploading && <p className="text-xs text-blue-600 font-bold animate-pulse">사진을 읽어오는 중입니다...</p>}
-                    </div>
-                  </div>
-                ) : (
-                  <div>
-                    <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">이미지 URL</label>
-                    <div className="space-y-3">
-                      {newPost.imageUrls.map((url, index) => (
-                        <div key={index} className="flex gap-2">
-                          <div className="relative flex-1">
-                            <ImageIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                            <input 
-                              type="text" 
-                              value={url}
-                              onChange={e => handleImageUrlChange(index, e.target.value)}
-                              className="w-full pl-12 pr-6 py-4 rounded-2xl bg-slate-50/50 border border-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all"
-                              placeholder="https://example.com/image.jpg"
-                            />
-                          </div>
-                          <button 
-                            type="button"
-                            onClick={() => handleRemoveImageUrl(index)}
-                            className="p-4 text-slate-400 hover:text-red-500 transition-colors"
-                          >
-                            <Trash2 className="w-5 h-5" />
-                          </button>
-                        </div>
-                      ))}
-                      <button 
-                        type="button"
-                        onClick={handleAddImageUrl}
-                        className="flex items-center text-sm font-bold text-blue-900 hover:text-blue-700 transition-colors"
-                      >
-                        <Plus className="w-4 h-4 mr-1" /> 사진 추가하기
-                      </button>
-                    </div>
-                  </div>
-                )}
-                <button type="submit" className="w-full bg-blue-900 text-white py-5 rounded-2xl font-bold text-lg hover:bg-slate-900 transition-all shadow-xl">
-                  게시하기
-                </button>
-              </form>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
     </div>
   );
 };

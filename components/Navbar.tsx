@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { SiteSettings } from '../types';
-import { Menu, X, Share2, Instagram, ChevronDown, BookOpen, Lock, Unlock } from 'lucide-react';
+import { Menu, X, ChevronDown, BookOpen, Lock, Unlock } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface NavbarProps {
@@ -136,7 +136,6 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, setView, settings, isAdmin
             <a href={settings.blogUrlMain} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-blue-600 transition-colors">
               <BookOpen className="w-5 h-5" />
             </a>
-            <Instagram className="w-5 h-5 text-gray-400 cursor-pointer hover:text-pink-600 transition-colors" />
           </div>
         </div>
 
@@ -183,8 +182,6 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, setView, settings, isAdmin
                 </div>
               ))}
               <div className="pt-6 flex space-x-6 border-t border-gray-100">
-                <Instagram className="w-6 h-6 text-gray-400" />
-                <Share2 className="w-6 h-6 text-gray-400" />
               </div>
             </div>
           </motion.div>

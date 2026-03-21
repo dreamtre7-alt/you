@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { SiteSettings, Post } from '../types';
-import { ChevronRight, Heart, Phone, Mail, Bell } from 'lucide-react';
+import { ChevronRight, Heart, Phone, Mail, Bell, MapPin } from 'lucide-react';
 import { motion } from 'motion/react';
 
 interface HomeSectionsProps {
@@ -14,13 +14,8 @@ const HomeSections: React.FC<HomeSectionsProps> = ({ settings, posts, setView })
   // Filter notices from posts
   const notices = posts.filter(p => p.category === 'NOTICES');
   
-  // Use real notices if available, otherwise mock for visual
-  const displayNotices = notices.length > 0 ? notices.slice(0, 4) : [
-    { id: '1', title: '2026년 1차 운영위원회 회의록', date: '2026-03-10' },
-    { id: '2', title: '2025년 함께사는마을 후원금.품 수입.사용 내역 보고..', date: '2026-03-09' },
-    { id: '3', title: '2025년 함께사는마을 결산공고', date: '2026-03-09' },
-    { id: '4', title: '2025년 행복한집 후원금(품) 수입 및 사용내역 공고..', date: '2026-02-11' },
-  ];
+  // Only show real notices
+  const displayNotices = notices.slice(0, 4);
 
   return (
     <section className="py-20 bg-white">
@@ -55,13 +50,25 @@ const HomeSections: React.FC<HomeSectionsProps> = ({ settings, posts, setView })
                   className="group cursor-pointer"
                   onClick={() => setView('NOTICES')}
                 >
-                  <div className="flex justify-between items-start space-x-4">
-                    <span className="text-gray-700 group-hover:text-blue-600 transition-colors line-clamp-1 flex-1 text-sm font-medium">
-                      {notice.title}
-                    </span>
-                    <span className="text-xs text-gray-400 whitespace-nowrap mt-1">
-                      {notice.date}
-                    </span>
+                  <div className="flex items-start space-x-4">
+                    {notice.imageUrls && notice.imageUrls.length > 0 && (
+                      <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 border border-gray-100">
+                        <img src={notice.imageUrls[0]} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="" />
+                      </div>
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex justify-between items-start">
+                        <span className="text-gray-700 group-hover:text-blue-600 transition-colors line-clamp-1 text-sm font-medium">
+                          {notice.title}
+                        </span>
+                        <span className="text-[10px] text-gray-400 whitespace-nowrap mt-1 ml-2">
+                          {notice.date}
+                        </span>
+                      </div>
+                      {notice.content && (
+                        <p className="text-[11px] text-gray-400 line-clamp-1 mt-0.5">{notice.content}</p>
+                      )}
+                    </div>
                   </div>
                   <div className="h-px bg-gray-100 mt-4 group-last:hidden" />
                 </li>
@@ -122,6 +129,19 @@ const HomeSections: React.FC<HomeSectionsProps> = ({ settings, posts, setView })
                 <div>
                   <p className="text-orange-100 text-xs font-medium uppercase tracking-wider mb-1">이메일</p>
                   <p className="text-lg font-medium">{settings.contactEmail}</p>
+                </div>
+              </div>
+              <div className="flex items-start space-x-4">
+                <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center flex-shrink-0">
+                  <MapPin className="w-6 h-6" />
+                </div>
+                <div>
+                  <p className="text-orange-100 text-xs font-medium uppercase tracking-wider mb-1">주소</p>
+                  <div className="space-y-1">
+                    {settings.contactAddresses.map((addr, idx) => (
+                      <p key={idx} className="text-sm font-medium leading-tight">{addr}</p>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>

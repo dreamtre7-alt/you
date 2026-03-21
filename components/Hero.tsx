@@ -30,7 +30,7 @@ const Hero: React.FC<HeroProps> = ({ settings }) => {
           className="max-w-6xl mx-auto"
         >
           <span className="inline-block text-white/90 text-sm font-medium tracking-[0.3em] uppercase mb-6 drop-shadow-md">
-            Community & Innovation
+            공동체와 혁신
           </span>
           <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold text-white leading-tight mb-8 drop-shadow-[0_10px_10px_rgba(0,0,0,0.5)] font-serif tracking-tight whitespace-nowrap">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-blue-200">

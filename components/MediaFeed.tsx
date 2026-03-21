@@ -40,7 +40,7 @@ const MediaFeed: React.FC<MediaFeedProps> = ({ settings }) => {
       <div className="container mx-auto px-6">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-20">
-            <h2 className="text-[10px] uppercase tracking-[0.4em] text-blue-700 font-bold mb-4">Official Channels</h2>
+            <h2 className="text-[10px] uppercase tracking-[0.4em] text-blue-700 font-bold mb-4">공식 채널</h2>
             <h3 className="text-4xl md:text-6xl font-bold text-slate-900 mb-8 tracking-tight">꿈뜨레 공식 소통 창구</h3>
             <p className="text-slate-600 leading-relaxed max-w-2xl mx-auto">
               꿈뜨레가 위탁 운영하는 <span className="text-blue-700 font-bold underline decoration-blue-200 underline-offset-4">다함께돌봄센터</span>의 생생한 교육 현장을 공식 블로그에서 확인하실 수 있습니다.
@@ -62,13 +62,13 @@ const MediaFeed: React.FC<MediaFeedProps> = ({ settings }) => {
                       <Heart className={`w-4 h-4 ${index === 0 ? 'text-red-500 fill-red-500' : 'text-blue-600 fill-blue-600'}`} />
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-white font-bold text-[10px] uppercase tracking-widest leading-none mb-1">Center No.{center.no.replace('호점', '')}</span>
+                      <span className="text-white font-bold text-[10px] uppercase tracking-widest leading-none mb-1">지점 번호 {center.no.replace('호점', '')}</span>
                       <span className="text-white/80 text-[8px] font-bold">{center.badge}</span>
                     </div>
                   </div>
                   {index === 2 && (
                     <div className="absolute top-6 right-6 bg-blue-900 text-white text-[9px] font-bold px-4 py-1.5 rounded-full flex items-center shadow-2xl border border-blue-400/30">
-                      <Sparkles className="w-3 h-3 mr-2" /> NEW CENTER
+                      <Sparkles className="w-3 h-3 mr-2" /> 새로운 지점
                     </div>
                   )}
                 </div>
@@ -78,7 +78,7 @@ const MediaFeed: React.FC<MediaFeedProps> = ({ settings }) => {
                     <div className="w-8 h-8 bg-green-50 rounded-lg flex items-center justify-center font-bold text-green-600 border border-green-100 text-xs">
                       N
                     </div>
-                    <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Naver Blog</span>
+                    <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">네이버 블로그</span>
                   </div>
                   
                   <h4 className="text-2xl font-bold text-slate-900 mb-4 leading-tight">

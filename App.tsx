@@ -10,20 +10,23 @@ import Sponsorship from './components/Sponsorship.tsx';
 import Footer from './components/Footer.tsx';
 import MediaFeed from './components/MediaFeed.tsx';
 import Activities from './components/Activities.tsx';
+import AdminDashboard from './components/AdminDashboard.tsx';
+import { PostCategory } from './types.ts';
 
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<View>('HOME');
   const [isAdmin, setIsAdmin] = useState(() => {
     return localStorage.getItem('kkumttre_admin') === 'true';
   });
+  const [adminPreSetCategory, setAdminPreSetCategory] = useState<PostCategory | undefined>(undefined);
 
   const [settings, setSettings] = useState<SiteSettings>(() => {
     const saved = localStorage.getItem('kkumttre_settings');
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        // Merge INITIAL_SETTINGS over parsed to ensure developer updates (like phone number) are applied
-        return { ...parsed, ...INITIAL_SETTINGS };
+        // Merge parsed over INITIAL_SETTINGS so user changes are preserved
+        return { ...INITIAL_SETTINGS, ...parsed };
       } catch (e) {
         console.error("Failed to parse settings", e);
       }
@@ -90,6 +93,10 @@ const App: React.FC = () => {
             onDeletePost={deletePost}
             currentCategory="NOTICES"
             isAdmin={isAdmin}
+            onOpenAdmin={(category) => {
+              setAdminPreSetCategory(category);
+              setCurrentView('ADMIN');
+            }}
           />
         );
       case 'SPONSORSHIP_NEWS':
@@ -101,6 +108,10 @@ const App: React.FC = () => {
             onDeletePost={deletePost}
             currentCategory="SPONSORSHIP_NEWS"
             isAdmin={isAdmin}
+            onOpenAdmin={(category) => {
+              setAdminPreSetCategory(category);
+              setCurrentView('ADMIN');
+            }}
           />
         );
       case 'SPONSORSHIP_REPORT':
@@ -112,6 +123,25 @@ const App: React.FC = () => {
             onDeletePost={deletePost}
             currentCategory="SPONSORSHIP_REPORT"
             isAdmin={isAdmin}
+            onOpenAdmin={(category) => {
+              setAdminPreSetCategory(category);
+              setCurrentView('ADMIN');
+            }}
+          />
+        );
+      case 'ADMIN':
+        return (
+          <AdminDashboard 
+            posts={posts}
+            settings={settings}
+            onAddPost={addPost}
+            onDeletePost={deletePost}
+            onUpdateSettings={setSettings}
+            onClose={() => {
+              setCurrentView('HOME');
+              setAdminPreSetCategory(undefined);
+            }}
+            preSetCategory={adminPreSetCategory}
           />
         );
       case 'MEDIA':

@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { SiteSettings } from '../types';
-import { Instagram, Facebook, MessageCircle, ExternalLink, BookOpen } from 'lucide-react';
+import { ExternalLink, BookOpen } from 'lucide-react';
 
 interface FooterProps {
   settings: SiteSettings;
@@ -44,6 +44,13 @@ const Footer: React.FC<FooterProps> = ({ settings }) => {
               창원시 비영리 민간단체 등록 제 2023-001호 <br/>
               주민과 함께 행복한 도시를 디자인합니다.
             </p>
+            <div className="mt-4 space-y-1">
+              {settings.contactAddresses.map((addr, idx) => (
+                <p key={idx} className="text-slate-400 text-[11px] leading-tight">
+                  {addr}
+                </p>
+              ))}
+            </div>
           </div>
 
           <div className="flex flex-col items-start md:items-end space-y-6">
@@ -56,12 +63,6 @@ const Footer: React.FC<FooterProps> = ({ settings }) => {
                 title="공식 블로그"
               >
                 <BookOpen className="w-5 h-5" />
-              </a>
-              <a href="#" className="w-12 h-12 bg-white rounded-full flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all border border-slate-200 text-blue-600 shadow-sm">
-                <Instagram className="w-5 h-5" />
-              </a>
-              <a href="#" className="w-12 h-12 bg-white rounded-full flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all border border-slate-200 text-blue-600 shadow-sm">
-                <MessageCircle className="w-5 h-5" />
               </a>
             </div>
           </div>

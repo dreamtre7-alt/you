@@ -29,24 +29,26 @@ const About: React.FC<AboutProps> = ({ settings }) => {
         </motion.div>
 
         {/* Representative Greeting */}
-        <div id="greeting" className="grid lg:grid-cols-2 gap-16 items-center mb-32 scroll-mt-32">
+        <div id="greeting" className="grid lg:grid-cols-2 gap-16 items-start mb-32 scroll-mt-32">
           <motion.div 
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="relative"
+            className="space-y-6"
           >
-            <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-xl">
+            <div className="overflow-hidden rounded-lg shadow-md">
               <img 
                 src={settings.representativePhoto} 
                 alt="Representative" 
-                className="w-full h-full object-cover"
+                className="w-full h-auto"
                 referrerPolicy="no-referrer"
               />
             </div>
-            <div className="absolute -bottom-6 -right-6 bg-blue-600 text-white p-6 rounded-2xl shadow-lg">
-              <p className="text-2xl font-bold">{settings.representativeName}</p>
-              <p className="text-sm opacity-80">{settings.siteName} 대표</p>
+            <div className="bg-slate-50 p-6 rounded-lg border border-slate-100">
+              <h4 className="text-xl font-bold text-gray-900 mb-3">대표 약력</h4>
+              <div className="text-gray-600 whitespace-pre-wrap leading-relaxed">
+                {settings.representativeBio}
+              </div>
             </div>
           </motion.div>
 
