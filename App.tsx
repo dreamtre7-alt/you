@@ -20,7 +20,7 @@ const App: React.FC = () => {
   });
   const [adminPreSetCategory, setAdminPreSetCategory] = useState<PostCategory | undefined>(undefined);
 
-  const SETTINGS_VERSION = '20260328_v5'; // Bump this to force reset old settings
+  const SETTINGS_VERSION = '20260328_v6'; // Bump this to force reset old settings
   const savedVersion = localStorage.getItem('kkumttre_settings_version');
   const isVersionMismatch = savedVersion !== SETTINGS_VERSION;
 
