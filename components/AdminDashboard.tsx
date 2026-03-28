@@ -352,8 +352,12 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ posts, settings, onAddP
                           </div>
                         </div>
                         <button 
-                          onClick={() => onDeletePost(post.id)}
-                          className="p-3 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onDeletePost(post.id);
+                          }}
+                          className="p-3 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all"
+                          title="삭제"
                         >
                           <Trash2 className="w-5 h-5" />
                         </button>
@@ -536,7 +540,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ posts, settings, onAddP
                             <button 
                               type="button"
                               onClick={() => handleRemoveAddress(idx)}
-                              className="p-3 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all"
+                              className="p-3 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all"
+                              title="삭제"
                             >
                               <Trash2 className="w-4 h-4" />
                             </button>
@@ -546,13 +551,27 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ posts, settings, onAddP
                     </div>
                   </div>
  
-                  <button 
-                    type="submit"
-                    className="flex items-center justify-center space-x-2 w-full bg-blue-600 text-white py-4 rounded-2xl font-bold hover:bg-blue-700 transition-all shadow-lg"
-                  >
-                    <Save className="w-5 h-5" />
-                    <span>설정 저장하기</span>
-                  </button>
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <button 
+                      type="submit"
+                      className="flex-1 flex items-center justify-center space-x-2 bg-blue-600 text-white py-4 rounded-2xl font-bold hover:bg-blue-700 transition-all shadow-lg"
+                    >
+                      <Save className="w-5 h-5" />
+                      <span>설정 저장하기 (현재 브라우저)</span>
+                    </button>
+                    <button 
+                      type="button"
+                      onClick={() => {
+                        const config = JSON.stringify(editingSettings, null, 2);
+                        navigator.clipboard.writeText(config);
+                        alert('설정 데이터가 클립보드에 복사되었습니다! 이 내용을 채팅창에 붙여넣어 주시면 제가 코드에 직접 반영하여 배포해 드릴 수 있습니다.');
+                      }}
+                      className="flex-1 flex items-center justify-center space-x-2 bg-slate-800 text-white py-4 rounded-2xl font-bold hover:bg-slate-900 transition-all shadow-lg"
+                    >
+                      <FileText className="w-5 h-5" />
+                      <span>배포용 설정 데이터 복사</span>
+                    </button>
+                  </div>
                 </form>
               </div>
             )}
@@ -836,7 +855,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ posts, settings, onAddP
                           <button 
                             type="button" 
                             onClick={() => handleRemoveImageUrl(idx)}
-                            className="absolute top-2 right-2 p-1.5 bg-black/50 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                            className="absolute top-2 right-2 p-1.5 bg-black/50 text-white rounded-full transition-opacity hover:bg-red-500"
+                            title="제거"
                           >
                             <X className="w-4 h-4" />
                           </button>

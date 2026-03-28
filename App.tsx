@@ -44,9 +44,7 @@ const App: React.FC = () => {
   };
 
   const deletePost = (id: string) => {
-    if (window.confirm('정말로 이 게시물을 삭제하시겠습니까?')) {
-      setPosts(prev => prev.filter(p => p.id !== id));
-    }
+    setPosts(prev => prev.filter(p => p.id !== id));
   };
 
   useEffect(() => {
@@ -60,6 +58,21 @@ const App: React.FC = () => {
   useEffect(() => {
     localStorage.setItem('kkumttre_admin', isAdmin.toString());
   }, [isAdmin]);
+
+  // Force update old blog URLs if they exist in state (migration for existing users)
+  useEffect(() => {
+    const oldMainUrl = "https://blog.naver.com/dreamtr7";
+    const newMainUrl = "https://blog.naver.com/dreamtre1108";
+    const target7thUrl = "https://blog.naver.com/zaminan";
+
+    if (settings.blogUrlMain === oldMainUrl || settings.blogUrl7 === "https://blog.naver.com/dreamtre1108" || settings.blogUrl7 === "https://m.blog.naver.com/zaminan") {
+      setSettings(prev => ({
+        ...prev,
+        blogUrlMain: prev.blogUrlMain === oldMainUrl ? newMainUrl : prev.blogUrlMain,
+        blogUrl7: (prev.blogUrl7 === "https://blog.naver.com/dreamtre1108" || prev.blogUrl7 === "https://m.blog.naver.com/zaminan") ? target7thUrl : prev.blogUrl7
+      }));
+    }
+  }, [settings.blogUrlMain, settings.blogUrl7]);
 
   useEffect(() => {
     document.documentElement.style.setProperty('--primary-blue', settings.primaryColor);

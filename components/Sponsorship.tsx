@@ -193,70 +193,129 @@ const Sponsorship: React.FC<SponsorshipProps> = ({ posts, settings, onAddPost, o
             )}
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
-            <AnimatePresence mode="popLayout">
-              {posts.map((post, index) => (
-                <motion.div
-                  layout
-                  key={post.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="group bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-2xl transition-all duration-500 flex flex-col relative"
-                  onClick={() => setSelectedPost(post)}
-                >
-                  {isAdmin && (
-                    <button 
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onDeletePost(post.id);
-                      }}
-                      className="absolute top-6 left-6 z-20 p-3 bg-white/90 backdrop-blur-md text-red-500 rounded-full opacity-0 group-hover:opacity-100 transition-all hover:bg-red-500 hover:text-white shadow-lg"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  )}
-                  
-                  {post.imageUrls && post.imageUrls.length > 0 && (
-                    <div className="relative h-64 overflow-hidden">
-                      <img 
-                        src={post.imageUrls[0]} 
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" 
-                        alt={post.title}
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-                      {post.imageUrls.length > 1 && (
-                        <div className="absolute top-6 right-6 bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full text-[10px] font-bold text-blue-900 flex items-center shadow-sm">
-                          <ImageIcon className="w-3.5 h-3.5 mr-2" /> +{post.imageUrls.length - 1} 사진
-                        </div>
+          {currentCategory === 'SPONSORSHIP_REPORT' ? (
+            <div className="bg-white rounded-[2rem] border border-slate-100 overflow-hidden shadow-sm">
+              <div className="hidden md:grid grid-cols-[120px_1fr_120px] gap-4 p-8 bg-slate-50/50 border-b border-slate-100 text-xs font-bold text-slate-400 uppercase tracking-[0.2em]">
+                <span>날짜</span>
+                <span>제목</span>
+                <span className="text-right">상세보기</span>
+              </div>
+              <AnimatePresence mode="popLayout">
+                {posts.map((post, index) => (
+                  <motion.div
+                    layout
+                    key={post.id}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ delay: index * 0.05 }}
+                    onClick={() => setSelectedPost(post)}
+                    className="grid grid-cols-1 md:grid-cols-[120px_1fr_120px] gap-4 p-8 border-b border-slate-50 hover:bg-blue-50/30 transition-all cursor-pointer group relative"
+                  >
+                    <div className="flex items-center text-sm text-slate-400 font-medium">
+                      {post.date}
+                    </div>
+                    <div className="flex items-center">
+                      <h4 className="text-lg md:text-xl font-bold text-slate-900 group-hover:text-blue-700 transition-colors leading-tight">
+                        {post.title}
+                      </h4>
+                      {post.imageUrls && post.imageUrls.length > 0 && (
+                        <ImageIcon className="w-4 h-4 ml-3 text-blue-400 opacity-60" />
                       )}
                     </div>
-                  )}
-                  
-                  <div className="p-10 flex-1 flex flex-col">
-                    <div className="flex items-center justify-between mb-6">
-                      <span className="text-[10px] font-bold text-blue-700 uppercase tracking-widest px-3 py-1 rounded-full bg-blue-50">
-                        {post.category !== 'SPONSORSHIP_REPORT' ? post.date : '보고'}
-                      </span>
+                    <div className="flex items-center justify-between md:justify-end">
+                      <div className="md:hidden text-xs font-bold text-blue-700 uppercase tracking-widest">
+                        상세보기
+                      </div>
+                      <ArrowRight className="w-5 h-5 text-blue-700 md:opacity-0 group-hover:opacity-100 transition-all group-hover:translate-x-2" />
                     </div>
-                    <h4 className="text-2xl font-bold text-slate-900 mb-4 leading-tight group-hover:text-blue-700 transition-colors">
-                      {post.title}
-                    </h4>
-                    {post.category !== 'SPONSORSHIP_REPORT' && (
+                    
+                    {isAdmin && (
+                      <button 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onDeletePost(post.id);
+                        }}
+                        className="absolute right-6 md:right-20 top-1/2 -translate-y-1/2 z-20 p-3 bg-white text-red-500 rounded-xl transition-all hover:bg-red-500 hover:text-white shadow-md border border-red-100"
+                        title="삭제"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    )}
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+              {posts.length === 0 && (
+                <div className="p-20 text-center">
+                  <p className="text-slate-400 font-medium">등록된 후원 보고가 없습니다.</p>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+              <AnimatePresence mode="popLayout">
+                {posts.map((post, index) => (
+                  <motion.div
+                    layout
+                    key={post.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="group bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-2xl transition-all duration-500 flex flex-col relative"
+                    onClick={() => setSelectedPost(post)}
+                  >
+                    {isAdmin && (
+                      <button 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onDeletePost(post.id);
+                        }}
+                        className="absolute top-6 left-6 z-20 p-3 bg-white/90 backdrop-blur-md text-red-500 rounded-full transition-all hover:bg-red-500 hover:text-white shadow-lg"
+                        title="삭제"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    )}
+                    
+                    {post.imageUrls && post.imageUrls.length > 0 && (
+                      <div className="relative h-64 overflow-hidden">
+                        <img 
+                          src={post.imageUrls[0]} 
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" 
+                          alt={post.title}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                        {post.imageUrls.length > 1 && (
+                          <div className="absolute top-6 right-6 bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full text-[10px] font-bold text-blue-900 flex items-center shadow-sm">
+                            <ImageIcon className="w-3.5 h-3.5 mr-2" /> +{post.imageUrls.length - 1} 사진
+                          </div>
+                        )}
+                      </div>
+                    )}
+                    
+                    <div className="p-10 flex-1 flex flex-col">
+                      <div className="flex items-center justify-between mb-6">
+                        <span className="text-[10px] font-bold text-blue-700 uppercase tracking-widest px-3 py-1 rounded-full bg-blue-50">
+                          {post.date}
+                        </span>
+                      </div>
+                      <h4 className="text-2xl font-bold text-slate-900 mb-4 leading-tight group-hover:text-blue-700 transition-colors">
+                        {post.title}
+                      </h4>
                       <p className="text-slate-500 text-sm leading-relaxed mb-8 flex-1 line-clamp-3">
                         {post.content}
                       </p>
-                    )}
-                    <div className="pt-6 border-t border-slate-50 flex items-center text-xs font-bold text-blue-900 group-hover:translate-x-2 transition-transform cursor-pointer">
-                      <span>자세히 보기</span>
-                      <ArrowRight className="w-3 h-3 ml-2" />
+                      <div className="pt-6 border-t border-slate-50 flex items-center text-xs font-bold text-blue-900 group-hover:translate-x-2 transition-transform cursor-pointer">
+                        <span>자세히 보기</span>
+                        <ArrowRight className="w-3 h-3 ml-2" />
+                      </div>
                     </div>
-                  </div>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </div>
+          )}
         </div>
       </section>
 

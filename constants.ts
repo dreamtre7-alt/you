@@ -30,9 +30,9 @@ export const INITIAL_SETTINGS: SiteSettings = {
 
 2025년 12월 20일`,
   representativeName: "이한기",
-  representativePhoto: "https://storage.googleapis.com/static-assets-public/input_file_2.png",
-  representativeBio: "꿈뜨레 지역공동체 대표\n창원시 다함께돌봄센터 7호점 센터장\n지역사회 공동체 활성화 전문가",
-  contactEmail: "dreamtre7@gmail.com, zaminan@naver.com",
+  representativePhoto: "https://storage.googleapis.com/static-assets-public/input_file_0.png",
+  representativeBio: "꿈뜨레 지역공동체 대표\n창원시 다함께돌봄센터 3호점, 7호점 대표\n마산대학교 명예교수\n국가균형발전위워회 자문위원\n경남도정 자문위원회 사회혁신분과장\n경남 민주교수 연대회장\n창원시 재정예산 심의위원회 위원장\n한국산업기술시험원 비상임감사\n창원의 미래포럼 공동대표\n전)한국보건기초의학회 회장\n전)경상남도 저출산고령사회 위원장\n전)마산대학교 물리치료학과 전임교수",
+  contactEmail: "dreamtre7@gmail.com",
   contactPhone: "055-232-4349",
   contactAddresses: [
     "창원시 마산회원구 내서읍 삼계6길 12 301호",
@@ -43,9 +43,9 @@ export const INITIAL_SETTINGS: SiteSettings = {
     { bankName: "농협은행", accountNumber: "계좌 준비 중", accountHolder: "꿈뜨레" },
     { bankName: "국민은행", accountNumber: "계좌 준비 중", accountHolder: "꿈뜨레" }
   ],
-  blogUrl7: "https://m.blog.naver.com/zaminan",
+  blogUrl7: "https://blog.naver.com/zaminan",
   blogUrl3: "https://blog.naver.com/dadol3-5664",
-  blogUrlMain: "https://blog.naver.com/dreamtr7",
+  blogUrlMain: "https://blog.naver.com/dreamtre1108",
   blogImage7: "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=800",
   blogImage3: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=800",
   blogImageMain: "https://images.unsplash.com/photo-1596464716127-f2a82984de30?w=800",
