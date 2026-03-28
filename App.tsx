@@ -20,9 +20,14 @@ const App: React.FC = () => {
   });
   const [adminPreSetCategory, setAdminPreSetCategory] = useState<PostCategory | undefined>(undefined);
 
+  const SETTINGS_VERSION = '20260328_v5'; // Bump this to force reset old settings
+  const savedVersion = localStorage.getItem('kkumttre_settings_version');
+  const isVersionMismatch = savedVersion !== SETTINGS_VERSION;
+
   const [settings, setSettings] = useState<SiteSettings>(() => {
     const saved = localStorage.getItem('kkumttre_settings');
-    if (saved) {
+
+    if (saved && !isVersionMismatch) {
       try {
         const parsed = JSON.parse(saved);
         // Merge parsed over INITIAL_SETTINGS so user changes are preserved
@@ -36,8 +41,23 @@ const App: React.FC = () => {
 
   const [posts, setPosts] = useState<Post[]>(() => {
     const saved = localStorage.getItem('kkumttre_posts');
-    return saved ? JSON.parse(saved) : INITIAL_POSTS;
+
+    if (saved && !isVersionMismatch) {
+      try {
+        const parsed = JSON.parse(saved);
+        return Array.isArray(parsed) ? parsed : INITIAL_POSTS;
+      } catch (e) {
+        return INITIAL_POSTS;
+      }
+    }
+    return INITIAL_POSTS;
   });
+
+  useEffect(() => {
+    if (isVersionMismatch) {
+      localStorage.setItem('kkumttre_settings_version', SETTINGS_VERSION);
+    }
+  }, [isVersionMismatch]);
 
   const addPost = (post: Post) => {
     setPosts(prev => [post, ...prev]);
@@ -78,11 +98,13 @@ const App: React.FC = () => {
     document.documentElement.style.setProperty('--primary-blue', settings.primaryColor);
     document.documentElement.style.setProperty('--theme-brightness', (settings.themeBrightness / 100).toString());
     const hex = settings.primaryColor.replace('#', '');
-    const r = parseInt(hex.substring(0, 2), 16);
-    const g = parseInt(hex.substring(2, 4), 16);
-    const b = parseInt(hex.substring(4, 6), 16);
-    if (!isNaN(r)) {
-      document.documentElement.style.setProperty('--primary-blue-rgb', `${r}, ${g}, ${b}`);
+    if (hex.length === 6) {
+      const r = parseInt(hex.substring(0, 2), 16);
+      const g = parseInt(hex.substring(2, 4), 16);
+      const b = parseInt(hex.substring(4, 6), 16);
+      if (!isNaN(r) && !isNaN(g) && !isNaN(b)) {
+        document.documentElement.style.setProperty('--primary-blue-rgb', `${r}, ${g}, ${b}`);
+      }
     }
   }, [settings]);
 

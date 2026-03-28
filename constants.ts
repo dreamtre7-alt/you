@@ -30,7 +30,7 @@ export const INITIAL_SETTINGS: SiteSettings = {
 
 2025년 12월 20일`,
   representativeName: "이한기",
-  representativePhoto: "https://storage.googleapis.com/static-assets-public/input_file_0.png",
+  representativePhoto: "",
   representativeBio: "꿈뜨레 지역공동체 대표\n창원시 다함께돌봄센터 3호점, 7호점 대표\n마산대학교 명예교수\n국가균형발전위워회 자문위원\n경남도정 자문위원회 사회혁신분과장\n경남 민주교수 연대회장\n창원시 재정예산 심의위원회 위원장\n한국산업기술시험원 비상임감사\n창원의 미래포럼 공동대표\n전)한국보건기초의학회 회장\n전)경상남도 저출산고령사회 위원장\n전)마산대학교 물리치료학과 전임교수",
   contactEmail: "dreamtre7@gmail.com",
   contactPhone: "055-232-4349",
