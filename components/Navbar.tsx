@@ -35,8 +35,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, setView, settings, isAdmin
       view: 'ABOUT',
       sub: [
         { name: '대표인사말', view: 'ABOUT', anchor: 'greeting' },
-        { name: '단체연혁', view: 'ABOUT', anchor: 'history' },
-        { name: '단체활동', view: 'ACTIVITIES' }
+        { name: '단체연혁', view: 'ABOUT', anchor: 'history' }
       ]
     },
     { name: '공지사항', view: 'NOTICES' },

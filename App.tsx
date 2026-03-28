@@ -9,7 +9,6 @@ import About from './components/About.tsx';
 import Sponsorship from './components/Sponsorship.tsx';
 import Footer from './components/Footer.tsx';
 import MediaFeed from './components/MediaFeed.tsx';
-import Activities from './components/Activities.tsx';
 import AdminDashboard from './components/AdminDashboard.tsx';
 import { PostCategory } from './types.ts';
 
@@ -181,8 +180,6 @@ const App: React.FC = () => {
         );
       case 'MEDIA':
         return <MediaFeed settings={settings} />;
-      case 'ACTIVITIES':
-        return <Activities settings={settings} />;
       default:
         return <Hero settings={settings} />;
     }

@@ -15,25 +15,17 @@ interface AdminDashboardProps {
 }
  
 const AdminDashboard: React.FC<AdminDashboardProps> = ({ posts, settings, onAddPost, onDeletePost, onUpdateSettings, onClose, preSetCategory }) => {
-  const [activeTab, setActiveTab] = useState<'POSTS' | 'SETTINGS' | 'GALLERY'>('POSTS');
+  const [activeTab, setActiveTab] = useState<'POSTS' | 'SETTINGS'>('POSTS');
   const [selectedCategory, setSelectedCategory] = useState<PostCategory>(preSetCategory || 'NOTICES');
   const [isAddingPost, setIsAddingPost] = useState(false);
-  const [isAddingActivityPhoto, setIsAddingActivityPhoto] = useState(false);
   const [newPost, setNewPost] = useState({
     title: '',
     content: '',
     imageUrls: ['']
   });
-  const [newActivityPhoto, setNewActivityPhoto] = useState({
-    title: '',
-    imageUrl: '',
-    date: new Date().getFullYear().toString(),
-    location: '꿈뜨레 지역공동체'
-  });
   const [uploading, setUploading] = useState(false);
   const [editingSettings, setEditingSettings] = useState<SiteSettings>({
-    ...settings,
-    activityPhotos: settings.activityPhotos || []
+    ...settings
   });
 
   useEffect(() => {
@@ -45,8 +37,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ posts, settings, onAddP
 
   useEffect(() => {
     setEditingSettings({
-      ...settings,
-      activityPhotos: settings.activityPhotos || []
+      ...settings
     });
   }, [settings]);
  
@@ -160,77 +151,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ posts, settings, onAddP
       contactAddresses: updated
     });
   };
-
-  const handleAddActivityPhoto = () => {
-    setIsAddingActivityPhoto(true);
-  };
-
-  const handleNewActivityPhotoFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    setUploading(true);
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setNewActivityPhoto(prev => ({ ...prev, imageUrl: reader.result as string }));
-      setUploading(false);
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const handleConfirmAddActivityPhoto = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newActivityPhoto.imageUrl) {
-      alert('이미지를 업로드해주세요.');
-      return;
-    }
-    setEditingSettings({
-      ...editingSettings,
-      activityPhotos: [
-        {
-          id: Date.now().toString(),
-          ...newActivityPhoto
-        },
-        ...(editingSettings.activityPhotos || [])
-      ]
-    });
-    setIsAddingActivityPhoto(false);
-    setNewActivityPhoto({
-      title: '',
-      imageUrl: '',
-      date: new Date().getFullYear().toString(),
-      location: '꿈뜨레 지역공동체'
-    });
-  };
-
-  const handleRemoveActivityPhoto = (id: string) => {
-    setEditingSettings({
-      ...editingSettings,
-      activityPhotos: (editingSettings.activityPhotos || []).filter(p => p.id !== id)
-    });
-  };
-
-  const handleUpdateActivityPhoto = (id: string, field: string, value: string) => {
-    setEditingSettings({
-      ...editingSettings,
-      activityPhotos: (editingSettings.activityPhotos || []).map(p => 
-        p.id === id ? { ...p, [field]: value } : p
-      )
-    });
-  };
-
-  const handleActivityPhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>, id: string) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    setUploading(true);
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      handleUpdateActivityPhoto(id, 'imageUrl', reader.result as string);
-      setUploading(false);
-    };
-    reader.readAsDataURL(file);
-  };
  
   const filteredPosts = posts.filter(p => p.category === selectedCategory);
 
@@ -292,13 +212,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ posts, settings, onAddP
             >
               <Settings className="w-4 h-4" />
               <span>사이트 설정</span>
-            </button>
-            <button 
-              onClick={() => setActiveTab('GALLERY')}
-              className={`flex items-center space-x-3 px-4 py-3 rounded-xl font-bold text-sm transition-all ${activeTab === 'GALLERY' ? 'bg-blue-600 text-white shadow-md' : 'text-slate-500 hover:bg-white hover:text-blue-600'}`}
-            >
-              <Camera className="w-4 h-4" />
-              <span>갤러리 관리</span>
             </button>
           </div>
 
@@ -575,223 +488,9 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ posts, settings, onAddP
                 </form>
               </div>
             )}
-            {activeTab === 'GALLERY' && (
-              <div className="space-y-8">
-                <div className="flex justify-between items-center">
-                  <h3 className="text-xl font-bold text-slate-900">단체활동 갤러리 관리</h3>
-                  <button 
-                    onClick={handleAddActivityPhoto}
-                    className="flex items-center space-x-2 bg-blue-900 text-white px-6 py-3 rounded-2xl font-bold hover:bg-slate-900 transition-all shadow-lg text-sm"
-                  >
-                    <Plus className="w-4 h-4" />
-                    <span>사진 추가</span>
-                  </button>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {(editingSettings.activityPhotos || []).map(photo => (
-                    <div key={photo.id} className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm space-y-4">
-                      <div className="relative aspect-video rounded-2xl overflow-hidden border border-slate-100 group">
-                        <img src={photo.imageUrl} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-                        <label className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer">
-                          <div className="bg-white/20 backdrop-blur-md p-3 rounded-full text-white">
-                            <ImageIcon className="w-6 h-6" />
-                          </div>
-                          <input 
-                            type="file" 
-                            accept="image/*" 
-                            className="hidden" 
-                            onChange={(e) => handleActivityPhotoUpload(e, photo.id)} 
-                          />
-                        </label>
-                      </div>
-                      
-                      <div className="grid gap-4">
-                        <div>
-                          <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 ml-1">제목</label>
-                          <input 
-                            type="text" 
-                            value={photo.title}
-                            onChange={e => handleUpdateActivityPhoto(photo.id, 'title', e.target.value)}
-                            className="w-full px-4 py-2 rounded-xl bg-slate-50 border border-slate-100 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all text-sm"
-                          />
-                        </div>
-                        <div className="grid grid-cols-2 gap-4">
-                          <div>
-                            <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 ml-1">날짜</label>
-                            <input 
-                              type="text" 
-                              value={photo.date || ''}
-                              onChange={e => handleUpdateActivityPhoto(photo.id, 'date', e.target.value)}
-                              className="w-full px-4 py-2 rounded-xl bg-slate-50 border border-slate-100 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all text-sm"
-                              placeholder="2024-2025"
-                            />
-                          </div>
-                          <div>
-                            <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 ml-1">장소</label>
-                            <input 
-                              type="text" 
-                              value={photo.location || ''}
-                              onChange={e => handleUpdateActivityPhoto(photo.id, 'location', e.target.value)}
-                              className="w-full px-4 py-2 rounded-xl bg-slate-50 border border-slate-100 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all text-sm"
-                              placeholder="꿈뜨레 지역공동체"
-                            />
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="flex justify-end pt-2">
-                        <button 
-                          onClick={() => handleRemoveActivityPhoto(photo.id)}
-                          className="flex items-center space-x-2 text-red-500 hover:bg-red-50 px-4 py-2 rounded-xl transition-all text-xs font-bold"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                          <span>삭제</span>
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="pt-8 border-t border-slate-100">
-                  <button 
-                    onClick={handleSaveSettings}
-                    className="flex items-center justify-center space-x-2 w-full bg-blue-600 text-white py-4 rounded-2xl font-bold hover:bg-blue-700 transition-all shadow-lg"
-                  >
-                    <Save className="w-5 h-5" />
-                    <span>갤러리 변경사항 저장하기</span>
-                  </button>
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </motion.div>
-
-      {/* Add Activity Photo Modal */}
-      <AnimatePresence>
-        {isAddingActivityPhoto && (
-          <div className="fixed inset-0 z-[210] flex items-center justify-center p-6">
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsAddingActivityPhoto(false)}
-              className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
-            />
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative w-full max-w-xl bg-white rounded-[2rem] shadow-2xl overflow-hidden"
-              onClick={e => e.stopPropagation()}
-            >
-              <div className="p-8 border-b border-slate-100 flex items-center justify-between bg-slate-50/30">
-                <h3 className="text-2xl font-bold text-slate-900">새 활동 사진 등록</h3>
-                <button 
-                  onClick={() => setIsAddingActivityPhoto(false)} 
-                  className="p-2 hover:bg-white rounded-full transition-all hover:rotate-90"
-                >
-                  <X className="w-6 h-6 text-slate-400" />
-                </button>
-              </div>
-              <form onSubmit={handleConfirmAddActivityPhoto} className="p-8 space-y-6">
-                <div className="space-y-4">
-                  <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">활동 사진</label>
-                  
-                  <div className="flex flex-col space-y-4">
-                    <div className="flex items-center space-x-4">
-                      <label className="flex-1 flex items-center justify-center space-x-2 px-4 py-3 bg-slate-50 hover:bg-slate-100 text-slate-600 rounded-xl cursor-pointer transition-all border border-slate-200 group">
-                        <ImageIcon className="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors" />
-                        <span className="text-sm font-bold">이미지 파일 선택</span>
-                        <input type="file" accept="image/*" className="hidden" onChange={handleNewActivityPhotoFileChange} />
-                      </label>
-                      
-                      {newActivityPhoto.imageUrl && (
-                        <button 
-                          type="button" 
-                          onClick={() => setNewActivityPhoto(prev => ({ ...prev, imageUrl: '' }))}
-                          className="px-4 py-3 bg-red-50 text-red-500 hover:bg-red-100 rounded-xl transition-all border border-red-100 flex items-center space-x-2"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                          <span className="text-sm font-bold">이미지 제거</span>
-                        </button>
-                      )}
-                    </div>
-
-                    {newActivityPhoto.imageUrl ? (
-                      <div className="relative aspect-video rounded-2xl overflow-hidden border border-slate-200 shadow-inner bg-slate-50 group">
-                        <img src={newActivityPhoto.imageUrl} className="w-full h-full object-contain" />
-                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                          <p className="text-white text-sm font-bold">이미지 미리보기</p>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="aspect-video rounded-2xl border-2 border-dashed border-slate-200 flex flex-col items-center justify-center bg-slate-50/50">
-                        {uploading ? (
-                          <div className="flex flex-col items-center">
-                            <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mb-2"></div>
-                            <p className="text-xs text-blue-600 font-bold">처리 중...</p>
-                          </div>
-                        ) : (
-                          <>
-                            <ImageIcon className="w-12 h-12 text-slate-300 mb-2" />
-                            <p className="text-sm text-slate-400">활동 사진을 선택해주세요</p>
-                          </>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                <div className="grid gap-4">
-                  <div>
-                    <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">활동 제목</label>
-                    <input 
-                      type="text" 
-                      value={newActivityPhoto.title}
-                      onChange={e => setNewActivityPhoto({...newActivityPhoto, title: e.target.value})}
-                      className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all"
-                      placeholder="활동 명칭을 입력하세요"
-                      required
-                    />
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">날짜</label>
-                      <input 
-                        type="text" 
-                        value={newActivityPhoto.date}
-                        onChange={e => setNewActivityPhoto({...newActivityPhoto, date: e.target.value})}
-                        className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all"
-                        placeholder="2024-2025"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">장소</label>
-                      <input 
-                        type="text" 
-                        value={newActivityPhoto.location}
-                        onChange={e => setNewActivityPhoto({...newActivityPhoto, location: e.target.value})}
-                        className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all"
-                        placeholder="꿈뜨레 지역공동체"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <button 
-                  type="submit" 
-                  disabled={!newActivityPhoto.imageUrl}
-                  className={`w-full py-4 rounded-2xl font-bold text-lg transition-all shadow-xl ${newActivityPhoto.imageUrl ? 'bg-blue-900 text-white hover:bg-slate-900' : 'bg-slate-100 text-slate-400 cursor-not-allowed'}`}
-                >
-                  갤러리에 추가하기
-                </button>
-              </form>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
 
       {/* Add Post Modal */}
       <AnimatePresence>
